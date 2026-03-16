@@ -1,25 +1,22 @@
+
 CREATE TABLE Users (
     id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     username VARCHAR(50) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
-    role VARCHAR(20) NOT NULL -- 'Admin', 'Doctor', 'Patient'
-);
+    role VARCHAR(20) NOT NULL, -- Admin, Doctor, Patient
 
-CREATE TABLE DoctorDetails(
-    doctor_id INT PRIMARY KEY REFERENCES Users(id) ON DELETE CASCADE,
-    specialization VARCHAR(100) NOT NULL,
+    
+    specialization VARCHAR(100),    -- Doctor fields
     experience INT,
+
+    age INT,            -- Patient fields
+    gender VARCHAR(10),
+    medical_history TEXT,
+
     phone VARCHAR(15)
 );
 
-CREATE TABLE PatientDetails(
-    patient_id INT PRIMARY KEY REFERENCES Users(id) ON DELETE CASCADE,
-    age INT,
-    gender VARCHAR(10),
-    phone VARCHAR(15),
-    medicalHist TEXT
-);
 
 CREATE TABLE Appointments (
     id SERIAL PRIMARY KEY,
@@ -27,8 +24,9 @@ CREATE TABLE Appointments (
     doctor_id INT REFERENCES Users(id),
     appointment_date DATE NOT NULL,
     appointment_time TIME NOT NULL,
-    status VARCHAR(20) DEFAULT 'Pending' -- 'Pending', 'Ongoing', 'Completed', 'Cancelled'
+    status VARCHAR(20) DEFAULT 'Pending'
 );
+
 
 ALTER TABLE Appointments
 ADD CONSTRAINT unique_doctor_slot
