@@ -1,6 +1,27 @@
 package com.hospital.services;
 
+import java.util.*;
+import com.hospital.models.Appointment;
+
 public class QueueService {
-    // TODO: Initialize a Queue structure (e.g., LinkedList) for appointments
-    // TODO: Create methods for adding to queue, calling next patient, and getting position
+    Queue<Appointment> daily = new ArrayDeque<>();
+
+    public void addAppointment(Appointment app) {
+        daily.add(app);
+    }
+
+    public Appointment NextPatient() {
+        return daily.poll();
+    }
+
+    public int getPosition(Appointment app) {
+        int pos = 1;
+        for (Appointment a : daily) {
+            if (a.equals(app)) {
+                return pos;
+            }
+            pos++;
+        }
+        return -1;
+    }
 }
