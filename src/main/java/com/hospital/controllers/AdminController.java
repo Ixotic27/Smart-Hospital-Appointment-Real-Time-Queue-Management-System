@@ -1,6 +1,6 @@
-// public package main.java.com.hospital.controllers;
+package com.hospital.controllers;
 
-class AdminController {
+public class AdminController {
 
     
 }

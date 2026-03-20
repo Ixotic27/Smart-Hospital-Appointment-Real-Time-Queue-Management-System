@@ -1,4 +1,4 @@
-package main.java.com.hospital.controllers;
+package com.hospital.controllers;
 
 public class PatientController {
 
