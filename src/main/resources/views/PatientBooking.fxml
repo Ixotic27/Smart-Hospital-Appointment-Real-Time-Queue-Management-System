@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<VBox alignment="CENTER" spacing="15"
+xmlns:fx="http://javafx.com/fxml"
+fx:controller="controllers.PatientController">
+
+    <Label text="Book Appointment" style="-fx-font-size:20;" />
+
+    <ComboBox fx:id="doctorBox" promptText="Select Doctor"/>
+
+    <DatePicker fx:id="datePicker"/>
+
+    <ComboBox fx:id="timeSlot" promptText="Select Time"/>
+
+    <Button text="Book Appointment" onAction="#bookAppointment"/>
+
+</VBox>
