@@ -1,3 +1,4 @@
+com\hospital\utils\DatabaseSetup.class
 com\hospital\dao\PatientDAO.class
 com\hospital\controllers\LoginController.class
 com\hospital\controllers\PatientController.class
