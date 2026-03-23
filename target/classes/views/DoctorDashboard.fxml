@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.VBox?>
+
 <VBox alignment="CENTER" spacing="15"
 xmlns:fx="http://javafx.com/fxml"
-fx:controller="controllers.DoctorController">
+fx:controller="com.hospital.controllers.DoctorController">
 
     <Label text="Doctor Dashboard" style="-fx-font-size:20;" />
 
