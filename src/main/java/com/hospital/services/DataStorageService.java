@@ -9,7 +9,6 @@ public class DataStorageService {
     private ArrayList<Doctor> doctors = new ArrayList<>();
     private ArrayList<Patient> patients = new ArrayList<>();
     private ArrayList<Appointment> appointments = new ArrayList<>();
-}
 
     public void loadDoctors(ArrayList<Doctor> doctors) {
         this.doctors = doctors;
@@ -36,3 +35,4 @@ public class DataStorageService {
     public void sortAppointmentBytime(ArrayList<Appointment> appointments){
         Collections.sort(appointments, Comparator.comparing(Appointment::getTime));
     }
+}
