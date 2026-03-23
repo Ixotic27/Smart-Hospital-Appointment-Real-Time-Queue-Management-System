@@ -3,22 +3,20 @@ CREATE TABLE Users (
     name VARCHAR(100) NOT NULL,
     username VARCHAR(50) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
-    role VARCHAR(20) NOT NULL -- 'Admin', 'Doctor', 'Patient'
+    role VARCHAR(20) NOT NULL --'Admin', 'Doctor', 'Patient'
 );
 
 CREATE TABLE DoctorDetails(
     doctor_id INT PRIMARY KEY REFERENCES Users(id) ON DELETE CASCADE,
     specialization VARCHAR(100) NOT NULL,
-    experience INT,
-    phone VARCHAR(15)
+    consultationFee DOUBLE PRECISION NOT NULL DEFAULT 500.00
 );
 
 CREATE TABLE PatientDetails(
     patient_id INT PRIMARY KEY REFERENCES Users(id) ON DELETE CASCADE,
-    age INT,
-    gender VARCHAR(10),
-    phone VARCHAR(15),
-    medicalHist TEXT
+    bloodGroup VARCHAR(5),
+    contactNumber VARCHAR(15),
+    age INT
 );
 
 CREATE TABLE Appointments (
@@ -27,7 +25,7 @@ CREATE TABLE Appointments (
     doctor_id INT REFERENCES Users(id),
     appointment_date DATE NOT NULL,
     appointment_time TIME NOT NULL,
-    status VARCHAR(20) DEFAULT 'Pending' -- 'Pending', 'Ongoing', 'Completed', 'Cancelled'
+    status VARCHAR(20) DEFAULT 'Pending'
 );
 
 ALTER TABLE Appointments
