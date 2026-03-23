@@ -10,6 +10,7 @@ com\hospital\models\Appointment.class
 com\hospital\models\User.class
 com\hospital\services\QueueService.class
 com\hospital\controllers\AdminController.class
+com\hospital\controllers\DoctorController.class
 com\hospital\dao\UserDAO.class
 com\hospital\utils\DatabaseConnection.class
 com\hospital\dao\UserDAO$1.class
