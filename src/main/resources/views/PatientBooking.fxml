@@ -8,6 +8,7 @@
 
 <VBox alignment="CENTER" spacing="15"
 xmlns:fx="http://javafx.com/fxml"
+stylesheets="@../styles/style.css" styleClass="main-container"
 fx:controller="com.hospital.controllers.PatientController">
 
     <Label text="Book Appointment" style="-fx-font-size:20;" />

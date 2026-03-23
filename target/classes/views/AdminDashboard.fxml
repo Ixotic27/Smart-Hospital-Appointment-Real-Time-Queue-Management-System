@@ -6,6 +6,7 @@
 
 <VBox alignment="CENTER" spacing="20"
 xmlns:fx="http://javafx.com/fxml"
+stylesheets="@../styles/style.css" styleClass="main-container"
 fx:controller="com.hospital.controllers.AdminController">
 
     <Label text="Admin Dashboard" style="-fx-font-size:20;" />
