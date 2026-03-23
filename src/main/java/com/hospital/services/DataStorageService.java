@@ -32,7 +32,7 @@ public class DataStorageService {
         return doctorAppointments;
     }
 
-    public void sortAppointmentBytime(ArrayList<Appointment> appointments){
+    public void sortAppointmentBytime(ArrayList<Appointment> appointments) {
         Collections.sort(appointments, Comparator.comparing(Appointment::getTime));
     }
 }
