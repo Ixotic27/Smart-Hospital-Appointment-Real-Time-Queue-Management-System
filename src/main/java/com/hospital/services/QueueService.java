@@ -15,7 +15,7 @@ public class QueueService {
     }
 
     daily.add(app);
-} {
+} 
   
 
     public Appointment getNextPatient() {
