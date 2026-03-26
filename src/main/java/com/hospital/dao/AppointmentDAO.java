@@ -26,7 +26,7 @@ public class AppointmentDAO {
 
     public ArrayList<Appointment> getAppointmentsByDoctor(int doctorId) {
         ArrayList<Appointment> list = new ArrayList<>();
-        String sql = "SELECT * FROM Appointments WHERE doctor_id = ? ORDER BY appointment_date, appointment_time";
+        String sql = "SELECT a.*, u.name as patient_name FROM Appointments a JOIN Users u ON a.patient_id = u.id WHERE a.doctor_id = ? ORDER BY a.appointment_date, a.appointment_time";
         
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -34,9 +34,12 @@ public class AppointmentDAO {
             stmt.setInt(1, doctorId);
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
+                    com.hospital.models.Patient p = new com.hospital.models.Patient(
+                        rs.getInt("patient_id"), rs.getString("patient_name"), "", "", "", "", 0
+                    );
                     Appointment app = new Appointment(
                         rs.getInt("id"),
-                        null,
+                        p,
                         null,
                         rs.getDate("appointment_date").toString(),
                         rs.getTime("appointment_time").toString(),

@@ -28,4 +28,27 @@ public class DoctorDAO {
         }
         return null;
     }
+
+    public java.util.ArrayList<Doctor> getAllDoctors() {
+        java.util.ArrayList<Doctor> doctors = new java.util.ArrayList<>();
+        String sql = "SELECT u.*, d.specialization, d.consultationFee FROM Users u JOIN DoctorDetails d ON u.id = d.doctor_id WHERE u.role = 'Doctor'";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            
+            while (rs.next()) {
+                doctors.add(new Doctor(
+                    rs.getInt("id"),
+                    rs.getString("name"),
+                    rs.getString("username"),
+                    rs.getString("password"),
+                    rs.getString("specialization"),
+                    rs.getDouble("consultationFee")
+                ));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return doctors;
+    }
 }

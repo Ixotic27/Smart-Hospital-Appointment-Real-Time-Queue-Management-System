@@ -36,10 +36,36 @@ public class LoginController {
             User user = userDAO.getUserByUsername(username);
 
             if (user != null && user.getPassword().equals(password)) {
-                errorLabel.setStyle("-fx-text-fill: green;");
                 errorLabel.setText("Login successful! Role: " + user.getRole());
-                
-                // TODO: Load the appropriate dashboard (AdminDashboard.fxml, etc.)
+
+                // Dummy data storage init to utilize Member 2's code!
+                com.hospital.services.DataStorageService storage = new com.hospital.services.DataStorageService();
+                storage.loadDoctors(new com.hospital.dao.DoctorDAO().getAllDoctors());
+
+                // Load the appropriate dashboard
+                String fxmlFile = "";
+                if (user.getRole().equalsIgnoreCase("Admin")) {
+                    fxmlFile = "/views/AdminDashboard.fxml";
+                } else if (user.getRole().equalsIgnoreCase("Doctor")) {
+                    fxmlFile = "/views/DoctorDashboard.fxml";
+                } else if (user.getRole().equalsIgnoreCase("Patient")) {
+                    fxmlFile = "/views/PatientBooking.fxml";
+                }
+
+                if (!fxmlFile.isEmpty()) {
+                    try {
+                        javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(getClass().getResource(fxmlFile));
+                        javafx.scene.Parent root = loader.load();
+                        javafx.scene.Scene scene = new javafx.scene.Scene(root);
+                        javafx.stage.Stage stage = (javafx.stage.Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
+                        stage.setScene(scene);
+                        stage.show();
+                    } catch (java.io.IOException e) {
+                        e.printStackTrace();
+                        errorLabel.setStyle("-fx-text-fill: red;");
+                        errorLabel.setText("Failed to load dashboard.");
+                    }
+                }
             } else {
                 errorLabel.setStyle("-fx-text-fill: red;");
                 errorLabel.setText("Invalid username or password.");
