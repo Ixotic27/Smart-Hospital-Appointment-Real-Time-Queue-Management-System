@@ -1,6 +1,7 @@
 com\hospital\utils\SlotConflictException.class
 com\hospital\utils\DatabaseSetup.class
 com\hospital\dao\PatientDAO.class
+com\hospital\utils\Session.class
 com\hospital\controllers\LoginController.class
 com\hospital\controllers\PatientController.class
 com\hospital\services\DataStorageService.class

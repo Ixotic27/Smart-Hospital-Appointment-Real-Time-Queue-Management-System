@@ -8,6 +8,7 @@ D:\Smart Hospital Appointment & Real-Time Queue Management System\src\main\java\
 D:\Smart Hospital Appointment & Real-Time Queue Management System\src\main\java\com\hospital\utils\DatabaseConnection.java
 D:\Smart Hospital Appointment & Real-Time Queue Management System\src\main\java\com\hospital\models\Doctor.java
 D:\Smart Hospital Appointment & Real-Time Queue Management System\src\main\java\com\hospital\dao\PatientDAO.java
+D:\Smart Hospital Appointment & Real-Time Queue Management System\src\main\java\com\hospital\utils\Session.java
 D:\Smart Hospital Appointment & Real-Time Queue Management System\src\main\java\com\hospital\controllers\AdminController.java
 D:\Smart Hospital Appointment & Real-Time Queue Management System\src\main\java\com\hospital\main\Main.java
 D:\Smart Hospital Appointment & Real-Time Queue Management System\src\main\java\com\hospital\dao\AppointmentDAO.java
