@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="CENTER" spacing="15"
+xmlns:fx="http://javafx.com/fxml"
+stylesheets="@../styles/style.css" styleClass="main-container"
+fx:controller="com.hospital.controllers.DoctorController">
+
+    <Label text="Doctor Dashboard" style="-fx-font-size:20;" />
+
+    <TableView fx:id="appointmentTable" prefHeight="250" prefWidth="400">
+
+        <columns>
+
+            <TableColumn text="Patient Name" prefWidth="150"/>
+
+            <TableColumn text="Time" prefWidth="120"/>
+
+            <TableColumn text="Status" prefWidth="120"/>
+
+        </columns>
+
+    </TableView>
+
+</VBox>
