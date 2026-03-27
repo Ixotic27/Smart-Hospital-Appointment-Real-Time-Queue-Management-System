@@ -1,24 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="CENTER" spacing="15"
-xmlns:fx="http://javafx.com/fxml"
-stylesheets="@../styles/style.css" styleClass="main-container"
-fx:controller="com.hospital.controllers.PatientController">
+<BorderPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+            stylesheets="@../styles/style.css" styleClass="main-container"
+            fx:controller="com.hospital.controllers.PatientController">
 
-    <Label text="Book Appointment" style="-fx-font-size:20;" />
+    <!-- Sidebar -->
+    <left>
+        <VBox styleClass="sidebar" prefWidth="250.0">
+            <Label text="Smart Hospital" styleClass="sidebar-title"/>
+            
+            <Button text="Book Appointment" onAction="#showBookingArea" styleClass="sidebar-btn" prefWidth="250.0" alignment="BASELINE_LEFT"/>
+            <Button text="My Appointments" onAction="#showMyAppointments" styleClass="sidebar-btn" prefWidth="250.0" alignment="BASELINE_LEFT"/>
+        </VBox>
+    </left>
 
-    <ComboBox fx:id="doctorBox" promptText="Select Doctor"/>
+    <!-- Main Content Area -->
+    <center>
+        <VBox fx:id="contentArea" alignment="TOP_LEFT" spacing="20.0">
+            <padding>
+                <Insets bottom="30.0" left="40.0" right="40.0" top="30.0"/>
+            </padding>
+            
+            <!-- Header -->
+            <Label fx:id="headerLabel" text="Book an Appointment" styleClass="title-label"/>
+            <Label fx:id="subHeaderLabel" text="Schedule your next visit cleanly and easily without any hassle." styleClass="subtitle-label"/>
 
-    <DatePicker fx:id="datePicker"/>
+            <!-- Booking Card -->
+            <VBox fx:id="cardArea" styleClass="card" spacing="15.0" maxWidth="450">
+                <Label text="Appointment Details" styleClass="field-label" style="-fx-font-size: 16px;"/>
+                
+                <Label text="Select Doctor" styleClass="field-label"/>
+                <ComboBox fx:id="doctorBox" promptText="Select Doctor" styleClass="combo-box" prefWidth="400"/>
+                
+                <Label text="Select Date" styleClass="field-label"/>
+                <DatePicker fx:id="datePicker" styleClass="date-picker" prefWidth="400"/>
+                
+                <Label text="Select Time" styleClass="field-label"/>
+                <ComboBox fx:id="timeSlot" promptText="Select Time" styleClass="combo-box" prefWidth="400"/>
+                
+                <Label text=""/> <!-- spacer -->
+                
+                <Button text="Book Appointment" onAction="#bookAppointment" styleClass="primary-button" prefWidth="400"/>
+            </VBox>
 
-    <ComboBox fx:id="timeSlot" promptText="Select Time"/>
+        </VBox>
+    </center>
 
-    <Button text="Book Appointment" onAction="#bookAppointment"/>
-
-</VBox>
+</BorderPane>
