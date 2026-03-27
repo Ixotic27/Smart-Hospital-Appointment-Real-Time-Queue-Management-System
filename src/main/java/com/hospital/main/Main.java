@@ -19,7 +19,7 @@ public class Main extends Application {
         }
         Parent root = FXMLLoader.load(fxmlLocation);
         primaryStage.setTitle("Smart Hospital Appointment & Queue Management");
-        primaryStage.setScene(new Scene(root, 600, 500));
+        primaryStage.setScene(new Scene(root, 900, 600));
         primaryStage.show();
     }
 
