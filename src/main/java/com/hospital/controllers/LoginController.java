@@ -38,6 +38,9 @@ public class LoginController {
             if (user != null && user.getPassword().equals(password)) {
                 errorLabel.setText("Login successful! Role: " + user.getRole());
 
+                // Set global session
+                com.hospital.utils.Session.setLoggedInUser(user);
+
                 // Dummy data storage init to utilize Member 2's code!
                 com.hospital.services.DataStorageService storage = new com.hospital.services.DataStorageService();
                 storage.loadDoctors(new com.hospital.dao.DoctorDAO().getAllDoctors());
