@@ -36,8 +36,8 @@ public class AdminController {
 
     private List<Doctor> getSampleDoctors() {
         List<Doctor> list = new ArrayList<>();
-        list.add(new Doctor(1, "Dr. Sarah Jenkins", "dr_jenkins", "", "Cardiologist", 800.00));
-        list.add(new Doctor(2, "Dr. Robert Chen", "dr_chen", "", "Neurologist", 900.00));
+        list.add(new Doctor(1, "Dr. Sonam Dubey", "dr_dubey", "", "Cardiologist", 800.00));
+        list.add(new Doctor(2, "Dr. Shivam Singh", "dr_singh", "", "Neurologist", 900.00));
         list.add(new Doctor(3, "Dr. Emily Watson", "dr_watson", "", "Dermatologist", 650.00));
         list.add(new Doctor(4, "Dr. Michael Brown", "dr_brown", "", "Orthopedic", 750.00));
         return list;
@@ -45,8 +45,8 @@ public class AdminController {
 
     private List<Patient> getSamplePatients() {
         List<Patient> list = new ArrayList<>();
-        list.add(new Patient(1, "John Doe", "johndoe", "", "O+", "1234567890", 30));
-        list.add(new Patient(2, "Jane Smith", "janesmith", "", "A-", "0987654321", 25));
+        list.add(new Patient(1, "Aditya Singh", "aditya", "", "O+", "1234567890", 30));
+        list.add(new Patient(2, "Vivek Bora", "vivek", "", "A-", "0987654321", 25));
         list.add(new Patient(3, "Alice Johnson", "alicej", "", "B+", "5551234567", 45));
         list.add(new Patient(4, "Bob Williams", "bobw", "", "AB+", "5559876543", 38));
         return list;
@@ -54,10 +54,10 @@ public class AdminController {
 
     private List<Appointment> getSampleAppointments() {
         List<Appointment> list = new ArrayList<>();
-        Patient p1 = new Patient(1, "John Doe", "johndoe", "", "O+", "1234567890", 30);
-        Patient p2 = new Patient(2, "Jane Smith", "janesmith", "", "A-", "0987654321", 25);
-        Doctor d1 = new Doctor(1, "Dr. Sarah Jenkins", "dr_jenkins", "", "Cardiologist", 800.00);
-        Doctor d2 = new Doctor(2, "Dr. Robert Chen", "dr_chen", "", "Neurologist", 900.00);
+        Patient p1 = new Patient(1, "Aditya Singh", "aditya", "", "O+", "1234567890", 30);
+        Patient p2 = new Patient(2, "Vivek Bora", "vivek", "", "A-", "0987654321", 25);
+        Doctor d1 = new Doctor(1, "Dr. Sonam Dubey", "dr_dubey", "", "Cardiologist", 800.00);
+        Doctor d2 = new Doctor(2, "Dr. Shivam Singh", "dr_singh", "", "Neurologist", 900.00);
         list.add(new Appointment(1, p1, d1, "2026-03-25", "10:00:00", "Pending"));
         list.add(new Appointment(2, p2, d2, "2026-03-26", "14:30:00", "Confirmed"));
         list.add(new Appointment(3, p1, d2, "2026-03-28", "09:00:00", "Completed"));

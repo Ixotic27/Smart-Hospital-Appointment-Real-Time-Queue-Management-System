@@ -11,27 +11,24 @@ Admins have full access to manage doctors, patients, and system settings.
 
 ## Doctors
 Doctors can view their scheduled appointments, patient details, and manage their availability.
-* **Name:** Dr. Sarah Jenkins
-* **Username:** `dr_jenkins`
+* **Name:** Dr. Sonam Dubey
+* **Username:** `dr_dubey`
 * **Password:** `doctorPass`
 * **Role:** `Doctor`
 
-* **Name:** Dr. Robert Chen
-* **Username:** `dr_chen`
+* **Name:** Dr. Shivam Singh
+* **Username:** `dr_singh`
 * **Password:** `docpass456`
 * **Role:** `Doctor`
 
 ## Patients
 Patients can book appointments, view their history, and update their health details.
-* **Name:** John Doe
-* **Username:** `johndoe`
+* **Name:** Aditya Singh
+* **Username:** `aditya`
 * **Password:** `patient123`
 * **Role:** `Patient`
 
-* **Name:** Jane Smith
-* **Username:** `janesmith`
+* **Name:** Vivek Bora
+* **Username:** `vivek`
 * **Password:** `health2024`
 * **Role:** `Patient`
-
----
-*Note: Make sure these records exist in your PostgreSQL `Users` table so that the unified login can successfully authenticate these accounts!*
