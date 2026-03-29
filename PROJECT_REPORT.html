@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Smart Hospital – Project Report</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue:   #1D4ED8;
+      --blue-l: #DBEAFE;
+      --blue-d: #1E3A8A;
+      --green:  #059669;
+      --green-l:#D1FAE5;
+      --amber:  #D97706;
+      --amber-l:#FEF3C7;
+      --red:    #DC2626;
+      --red-l:  #FEE2E2;
+      --gray-1: #F8FAFC;
+      --gray-2: #F1F5F9;
+      --gray-3: #E2E8F0;
+      --gray-4: #94A3B8;
+      --gray-5: #475569;
+      --gray-6: #1E293B;
+      --white:  #FFFFFF;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--gray-1);
+      color: var(--gray-6);
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
+    /* ── COVER PAGE ── */
+    .cover {
+      background: linear-gradient(135deg, #0F172A 0%, #1E3A8A 55%, #1D4ED8 100%);
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 60px 40px;
+      page-break-after: always;
+    }
+    .cover .badge {
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 999px;
+      padding: 6px 20px;
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 28px;
+      font-weight: 500;
+    }
+    .cover h1 {
+      font-size: 42px;
+      font-weight: 800;
+      line-height: 1.2;
+      max-width: 700px;
+      margin-bottom: 16px;
+      letter-spacing: -1px;
+    }
+    .cover h1 span { color: #93C5FD; }
+    .cover .subtitle {
+      font-size: 16px;
+      color: rgba(255,255,255,0.7);
+      max-width: 520px;
+      margin-bottom: 48px;
+    }
+    .cover .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      gap: 20px;
+      max-width: 680px;
+      width: 100%;
+    }
+    .cover .meta-item {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 12px;
+      padding: 20px 16px;
+    }
+    .cover .meta-item .label { font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: rgba(255,255,255,0.5); margin-bottom: 6px; }
+    .cover .meta-item .value { font-size: 15px; font-weight: 600; }
+    .cover .progress-bar-wrap {
+      margin-top: 48px;
+      width: 100%;
+      max-width: 560px;
+    }
+    .cover .pb-label { display:flex; justify-content:space-between; margin-bottom:8px; font-size:13px; color:rgba(255,255,255,0.7); }
+    .cover .pb-outer { background:rgba(255,255,255,0.15); border-radius:999px; height:10px; }
+    .cover .pb-inner { background:linear-gradient(90deg,#60A5FA,#A78BFA); border-radius:999px; height:10px; width:68%; }
+
+    /* ── CONTENT ── */
+    .page { max-width: 960px; margin: 0 auto; padding: 56px 48px; }
+
+    .section-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--blue-d);
+      border-bottom: 3px solid var(--blue);
+      padding-bottom: 10px;
+      margin-bottom: 28px;
+      margin-top: 52px;
+    }
+    .section-title:first-of-type { margin-top: 0; }
+
+    /* ── TOC ── */
+    .toc { background: var(--white); border: 1px solid var(--gray-3); border-radius: 14px; padding: 32px 36px; margin-bottom: 40px; }
+    .toc h2 { font-size: 18px; font-weight: 700; color: var(--blue-d); margin-bottom: 20px; }
+    .toc ol { padding-left: 22px; }
+    .toc li { padding: 5px 0; font-weight: 500; color: var(--blue); }
+    .toc li span { color: var(--gray-5); font-weight:400; font-size:13px; margin-left:6px; }
+
+    /* ── CARDS ── */
+    .card { background: var(--white); border:1px solid var(--gray-3); border-radius:14px; padding:28px 32px; margin-bottom:20px; }
+    .card h3 { font-size:15px; font-weight:700; color:var(--blue-d); margin-bottom:10px; display:flex; align-items:center; gap:8px; }
+    .card p, .card li { font-size:13.5px; color:var(--gray-5); }
+    .card ul, .card ol { padding-left:20px; }
+    .card li { padding: 3px 0; }
+
+    /* ── FILE TREE ── */
+    .filetree { background:#0F172A; border-radius:14px; padding:28px 32px; font-family:'Courier New', monospace; font-size:13px; line-height:2; color:#CBD5E1; margin-bottom:20px; }
+    .filetree .dir  { color:#93C5FD; font-weight:600; }
+    .filetree .file { color:#A5F3FC; }
+    .filetree .note { color:#64748B; font-style:italic; }
+    .filetree .pkg  { color:#C4B5FD; }
+
+    /* ── FILE TABLE ── */
+    table { width:100%; border-collapse:collapse; margin-bottom:24px; }
+    thead { background:var(--blue-d); color:white; }
+    th { padding:12px 16px; text-align:left; font-size:12.5px; font-weight:600; letter-spacing:.5px; }
+    td { padding:11px 16px; font-size:13px; border-bottom:1px solid var(--gray-3); vertical-align:top; }
+    tr:nth-child(even) td { background:var(--gray-1); }
+    tr:hover td { background:var(--blue-l); }
+    .mono { font-family:'Courier New',monospace; font-size:12px; color:var(--blue-d); background:var(--blue-l); padding:2px 6px; border-radius:4px; }
+
+    /* ── BADGE ── */
+    .tag { display:inline-block; padding:3px 10px; border-radius:999px; font-size:11.5px; font-weight:600; }
+    .tag-blue  { background:var(--blue-l);  color:var(--blue-d); }
+    .tag-green { background:var(--green-l); color:var(--green); }
+    .tag-amber { background:var(--amber-l); color:var(--amber); }
+    .tag-red   { background:var(--red-l);   color:var(--red); }
+
+    /* ── FLOW ── */
+    .flow { display:flex; flex-direction:column; gap:0; margin:24px 0; }
+    .flow-step { display:flex; align-items:flex-start; gap:20px; position:relative; }
+    .flow-step:not(:last-child)::after {
+      content:''; position:absolute; left:19px; top:44px;
+      width:2px; height:calc(100% - 4px); background:var(--blue-l);
+    }
+    .flow-num { width:40px; height:40px; background:var(--blue); color:white; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:15px; flex-shrink:0; }
+    .flow-body { background:var(--white); border:1px solid var(--gray-3); border-radius:12px; padding:16px 20px; flex:1; margin-bottom:16px; }
+    .flow-body h4 { font-size:14px; font-weight:700; color:var(--blue-d); margin-bottom:4px; }
+    .flow-body p  { font-size:13px; color:var(--gray-5); }
+
+    /* ── PROGRESS ── */
+    .progress-section { background:var(--white); border:1px solid var(--gray-3); border-radius:14px; padding:32px; margin-bottom:20px; }
+    .progress-section h3 { font-size:16px; font-weight:700; color:var(--gray-6); margin-bottom:20px; }
+    .prog-item { margin-bottom:18px; }
+    .prog-label { display:flex; justify-content:space-between; font-size:13px; font-weight:600; color:var(--gray-5); margin-bottom:6px; }
+    .prog-bar { background:var(--gray-2); border-radius:999px; height:9px; }
+    .prog-fill { border-radius:999px; height:9px; }
+    .fill-done  { background:linear-gradient(90deg,#059669,#34D399); }
+    .fill-partial { background:linear-gradient(90deg,#D97706,#FBBF24); }
+    .fill-todo  { background:linear-gradient(90deg,#DC2626,#F87171); }
+
+    /* ── SUMMARY BOX ── */
+    .summary-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin-bottom:32px; }
+    .summary-box { border-radius:14px; padding:24px; text-align:center; }
+    .summary-box .big { font-size:36px; font-weight:800; }
+    .summary-box .lbl { font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:1px; margin-top:4px; }
+    .box-done   { background:var(--green-l); color:var(--green); }
+    .box-partial{ background:var(--amber-l); color:var(--amber); }
+    .box-todo   { background:var(--red-l);   color:var(--red); }
+
+    /* ── CALLOUT ── */
+    .callout { border-left:4px solid; border-radius:8px; padding:16px 20px; margin:20px 0; }
+    .callout-blue  { border-color:var(--blue);  background:var(--blue-l);  }
+    .callout-green { border-color:var(--green); background:var(--green-l); }
+    .callout-amber { border-color:var(--amber); background:var(--amber-l); }
+    .callout p { font-size:13px; }
+    .callout strong { display:block; margin-bottom:4px; font-size:13.5px; }
+
+    /* ── PAGE BREAKS ── */
+    @media print {
+      .cover { page-break-after: always; }
+      .section-title { page-break-before: auto; }
+      .page { padding: 40px 32px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════ COVER PAGE ══════════════════════════════════════════ -->
+<div class="cover">
+  <div class="badge">Technical Project Report</div>
+  <h1>Smart Hospital Appointment &amp;<br/><span>Real-Time Queue Management</span> System</h1>
+  <p class="subtitle">
+    A JavaFX Desktop Application with PostgreSQL backend for managing hospital appointments, doctor dashboards, and live patient queues.
+  </p>
+  <div class="meta-grid">
+    <div class="meta-item">
+      <div class="label">Technology</div>
+      <div class="value">JavaFX + Maven</div>
+    </div>
+    <div class="meta-item">
+      <div class="label">Database</div>
+      <div class="value">PostgreSQL (Supabase)</div>
+    </div>
+    <div class="meta-item">
+      <div class="label">Architecture</div>
+      <div class="value">MVC Pattern</div>
+    </div>
+    <div class="meta-item">
+      <div class="label">Java Version</div>
+      <div class="value">Java 17</div>
+    </div>
+    <div class="meta-item">
+      <div class="label">Build Tool</div>
+      <div class="value">Apache Maven 3.9.6</div>
+    </div>
+    <div class="meta-item">
+      <div class="label">Report Date</div>
+      <div class="value">March 29, 2026</div>
+    </div>
+  </div>
+  <div class="progress-bar-wrap">
+    <div class="pb-label"><span>Overall Project Completion</span><span>~68%</span></div>
+    <div class="pb-outer"><div class="pb-inner"></div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════ CONTENT ══════════════════════════════════════════ -->
+<div class="page">
+
+  <!-- TOC -->
+  <div class="toc">
+    <h2>📋 Table of Contents</h2>
+    <ol>
+      <li>Project Overview <span>— Purpose, goals, and tech stack</span></li>
+      <li>File Structure <span>— Full directory tree with significance of every file</span></li>
+      <li>Architecture &amp; Design Pattern <span>— MVC breakdown</span></li>
+      <li>Component Deep-Dive <span>— Every file's functions and role</span></li>
+      <li>Application Workflow <span>— End-to-end user flow steps</span></li>
+      <li>Database Design <span>— Tables, schema, and seed data</span></li>
+      <li>Progress Report <span>— Completed vs. remaining work</span></li>
+      <li>What Remains to Build <span>— Prioritised pending items</span></li>
+      <li>How to Run <span>— Setup and launch instructions</span></li>
+    </ol>
+  </div>
+
+  <!-- ── SECTION 1 ── -->
+  <h2 class="section-title">1. Project Overview</h2>
+  <div class="card">
+    <h3>🏥 Purpose</h3>
+    <p>
+      This desktop application digitises the appointment and queue management process of a hospital. It provides three role-based dashboards — <strong>Admin</strong>, <strong>Doctor</strong>, and <strong>Patient</strong> — each with context-specific features. The goal is to eliminate paper-based queues, manage doctors' schedules, and give patients a real-time view of their appointment status.
+    </p>
+  </div>
+  <div class="card">
+    <h3>🛠️ Technology Stack</h3>
+    <ul>
+      <li><strong>Frontend (UI):</strong> JavaFX 21 with FXML layout files</li>
+      <li><strong>Styling:</strong> JavaFX CSS (<code>style.css</code>) — inspired by Tailwind/modern card design</li>
+      <li><strong>Backend Logic:</strong> Java 17 — MVC architecture</li>
+      <li><strong>Database:</strong> PostgreSQL hosted on Supabase (cloud) — accessed via JDBC</li>
+      <li><strong>Build System:</strong> Apache Maven 3.9.6 (bundled) + <code>pom.xml</code></li>
+      <li><strong>ORM:</strong> Raw JDBC (no Hibernate/JPA)</li>
+    </ul>
+  </div>
+
+  <!-- ── SECTION 2 — FILE STRUCTURE ── -->
+  <h2 class="section-title">2. File Structure</h2>
+  <div class="filetree">
+<span class="dir">Smart Hospital Appointment &amp; Real-Time Queue Management System/</span><br/>
+├── <span class="file">pom.xml</span>                        <span class="note">← Maven build config; declares all dependencies</span><br/>
+├── <span class="file">.gitignore</span>                     <span class="note">← Excludes target/, maven.zip, apache-maven-3.9.6/</span><br/>
+├── <span class="file">README.md</span>                      <span class="note">← Project summary and quick setup guide</span><br/>
+├── <span class="file">IMPLEMENTATION_PLAN.md</span>          <span class="note">← Phase-by-phase implementation roadmap</span><br/>
+├── <span class="file">RUNNING_JAVAFX.md</span>              <span class="note">← How to compile and run the app (Maven commands)</span><br/>
+├── <span class="file">CREDENTIALS.md</span>                 <span class="note">← Default test login credentials for all roles</span><br/>
+├── <span class="dir">apache-maven-3.9.6/</span>             <span class="note">← Bundled Maven binary (no global install needed)</span><br/>
+│<br/>
+└── <span class="dir">src/main/</span><br/>
+    ├── <span class="dir">java/com/hospital/</span><br/>
+    │   ├── <span class="dir">main/</span><br/>
+    │   │   └── <span class="pkg">Main.java</span>           <span class="note">← JavaFX entry point; loads Login.fxml on Stage</span><br/>
+    │   │<br/>
+    │   ├── <span class="dir">models/</span>                 <span class="note">← Plain Java Objects (data holders)</span><br/>
+    │   │   ├── <span class="pkg">User.java</span>           <span class="note">← Abstract base class (id, name, username, password, role)</span><br/>
+    │   │   ├── <span class="pkg">Doctor.java</span>         <span class="note">← Extends User; adds specialization + consultationFee</span><br/>
+    │   │   ├── <span class="pkg">Patient.java</span>        <span class="note">← Extends User; adds bloodGroup, contactNumber, age</span><br/>
+    │   │   └── <span class="pkg">Appointment.java</span>    <span class="note">← Holds Patient, Doctor, date, time, status</span><br/>
+    │   │<br/>
+    │   ├── <span class="dir">dao/</span>                    <span class="note">← Data Access Objects — all SQL lives here</span><br/>
+    │   │   ├── <span class="pkg">UserDAO.java</span>        <span class="note">← Login auth + insert new user (with role branching)</span><br/>
+    │   │   ├── <span class="pkg">DoctorDAO.java</span>      <span class="note">← Get all doctors; get doctor by ID (JOIN with DoctorDetails)</span><br/>
+    │   │   ├── <span class="pkg">PatientDAO.java</span>     <span class="note">← Get all patients; get patient by ID (JOIN with PatientDetails)</span><br/>
+    │   │   └── <span class="pkg">AppointmentDAO.java</span> <span class="note">← Book, fetch, and list appointments by patient/doctor</span><br/>
+    │   │<br/>
+    │   ├── <span class="dir">services/</span>               <span class="note">← Business logic (not directly tied to DB or UI)</span><br/>
+    │   │   ├── <span class="pkg">QueueService.java</span>   <span class="note">← In-memory daily queue; conflict detection; position lookup</span><br/>
+    │   │   └── <span class="pkg">DataStorageService.java</span> <span class="note">← In-memory lists for Doctors/Patients/Appointments (sorted)</span><br/>
+    │   │<br/>
+    │   ├── <span class="dir">controllers/</span>             <span class="note">← JavaFX Controllers — UI event handlers</span><br/>
+    │   │   ├── <span class="pkg">LoginController.java</span>    <span class="note">← Handles login; route to correct dashboard by role</span><br/>
+    │   │   ├── <span class="pkg">AdminController.java</span>    <span class="note">← Admin dashboard; view all doctors, patients, appointments</span><br/>
+    │   │   ├── <span class="pkg">DoctorController.java</span>   <span class="note">← Doctor dashboard; live queue thread; schedule; patient list</span><br/>
+    │   │   └── <span class="pkg">PatientController.java</span>  <span class="note">← Patient dashboard; book appointment; view own appointments</span><br/>
+    │   │<br/>
+    │   └── <span class="dir">utils/</span>                   <span class="note">← Shared utilities</span><br/>
+    │       ├── <span class="pkg">DatabaseConnection.java</span>  <span class="note">← Single static method getConnection() → JDBC to Supabase</span><br/>
+    │       ├── <span class="pkg">DatabaseSetup.java</span>      <span class="note">← One-time runner: inserts seed accounts into DB</span><br/>
+    │       ├── <span class="pkg">Session.java</span>            <span class="note">← Singleton: stores logged-in User across screen transitions</span><br/>
+    │       └── <span class="pkg">SlotConflictException.java</span> <span class="note">← Custom exception thrown when time slot already booked</span><br/>
+    │<br/>
+    └── <span class="dir">resources/</span><br/>
+        ├── <span class="dir">views/</span><br/>
+        │   ├── <span class="file">Login.fxml</span>          <span class="note">← Login screen layout (username, password, button, error label)</span><br/>
+        │   ├── <span class="file">AdminDashboard.fxml</span> <span class="note">← Admin layout (BorderPane: sidebar nav + dynamic cardArea)</span><br/>
+        │   ├── <span class="file">DoctorDashboard.fxml</span> <span class="note">← Doctor layout (BorderPane: header + contentArea VBox)</span><br/>
+        │   └── <span class="file">PatientBooking.fxml</span> <span class="note">← Patient layout (doctor ComboBox, DatePicker, time slot picker)</span><br/>
+        ├── <span class="dir">database/</span><br/>
+        │   ├── <span class="file">schema.sql</span>          <span class="note">← CREATE TABLE statements: Users, DoctorDetails, PatientDetails, Appointments</span><br/>
+        │   └── <span class="file">seed.sql</span>            <span class="note">← INSERT sample records: admin, doctors, patients, appointments</span><br/>
+        └── <span class="dir">styles/</span><br/>
+            └── <span class="file">style.css</span>           <span class="note">← JavaFX CSS: card layout, tables, buttons, nav sidebar</span>
+  </div>
+
+  <!-- ── SECTION 3 — ARCHITECTURE ── -->
+  <h2 class="section-title">3. Architecture &amp; Design Pattern</h2>
+  <div class="card">
+    <h3>🏗️ Model-View-Controller (MVC)</h3>
+    <p>The project follows a clean MVC layered architecture:</p>
+    <br/>
+    <table>
+      <thead><tr><th>Layer</th><th>Package</th><th>Responsibility</th></tr></thead>
+      <tbody>
+        <tr><td><span class="tag tag-blue">Model</span></td><td><span class="mono">com.hospital.models</span></td><td>Pure data objects — User, Doctor, Patient, Appointment. No logic, no UI.</td></tr>
+        <tr><td><span class="tag tag-green">View</span></td><td><span class="mono">resources/views/*.fxml</span><br/><span class="mono">resources/styles/style.css</span></td><td>FXML defines UI layout declaratively. CSS controls visual appearance.</td></tr>
+        <tr><td><span class="tag tag-amber">Controller</span></td><td><span class="mono">com.hospital.controllers</span></td><td>Handles user events (clicks), fetches data via DAO, updates the View.</td></tr>
+        <tr><td><span class="tag tag-red">DAO</span></td><td><span class="mono">com.hospital.dao</span></td><td>Data Access Objects — all SQL queries. Decoupled from UI completely.</td></tr>
+        <tr><td><span class="tag tag-blue">Service</span></td><td><span class="mono">com.hospital.services</span></td><td>Business logic — queue ordering, conflict detection, sorted in-memory lists.</td></tr>
+        <tr><td><span class="tag tag-green">Util</span></td><td><span class="mono">com.hospital.utils</span></td><td>Cross-cutting concerns — DB connection, session state, custom exceptions.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout callout-blue">
+    <p><strong>Why MVC?</strong> It separates UI concerns from data logic. A developer can swap PostgreSQL for MySQL/SQLite purely in the DAO layer without touching controllers or FXML views. Similarly, UI redesigns don't break business logic.</p>
+  </div>
+
+  <!-- ── SECTION 4 — COMPONENT DEEP-DIVE ── -->
+  <h2 class="section-title">4. Component Deep-Dive</h2>
+
+  <h3 style="font-size:16px;font-weight:700;color:var(--blue-d);margin:24px 0 12px;">4.1 Entry Point</h3>
+  <div class="card">
+    <h3>📄 Main.java — <span class="mono">com.hospital.main</span></h3>
+    <ul>
+      <li>Extends <code>javafx.application.Application</code> — the root of every JavaFX app.</li>
+      <li><strong>start(Stage):</strong> Resolves the URL for <code>Login.fxml</code>, calls <code>FXMLLoader.load()</code>, creates a <code>Scene(root, 900, 600)</code>, sets the window title "Smart Hospital Appointment &amp; Queue Management", then shows the stage.</li>
+      <li><strong>main():</strong> Calls <code>launch(args)</code> — required JavaFX bootstrap.</li>
+      <li>Error handling: prints a message if <code>Login.fxml</code> cannot be found.</li>
+    </ul>
+  </div>
+
+  <h3 style="font-size:16px;font-weight:700;color:var(--blue-d);margin:24px 0 12px;">4.2 Models</h3>
+  <table>
+    <thead><tr><th>File</th><th>Fields</th><th>Significance</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><span class="mono">User.java</span></td>
+        <td>id, name, username, password, role</td>
+        <td><strong>Abstract base class.</strong> Cannot be instantiated directly. Doctor and Patient both inherit from it. Role field ("Admin"/"Doctor"/"Patient") drives routing logic post-login.</td>
+      </tr>
+      <tr>
+        <td><span class="mono">Doctor.java</span></td>
+        <td>+specialization, +consultationFee</td>
+        <td>Extends User. Used to populate AdminController's doctor list and PatientController's doctor picker ComboBox.</td>
+      </tr>
+      <tr>
+        <td><span class="mono">Patient.java</span></td>
+        <td>+bloodGroup, +contactNumber, +age</td>
+        <td>Extends User. Medical identity object linked to every Appointment. Displayed in DoctorController's patient list.</td>
+      </tr>
+      <tr>
+        <td><span class="mono">Appointment.java</span></td>
+        <td>appointmentId, Patient, Doctor, date, time, status</td>
+        <td>Core domain object. Links a Patient to a Doctor at a specific date/time slot. Status can be "Pending"/"Confirmed"/"Completed".</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 style="font-size:16px;font-weight:700;color:var(--blue-d);margin:24px 0 12px;">4.3 Data Access Objects (DAO)</h3>
+  <table>
+    <thead><tr><th>File</th><th>Key Methods</th><th>What It Does</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><span class="mono">UserDAO.java</span></td>
+        <td>authenticate(), insertUser()</td>
+        <td>
+          <strong>authenticate(username, password):</strong> Runs a SELECT on the Users table; if match found, checks role and returns a typed Doctor/Patient/Admin object.<br/>
+          <strong>insertUser(User):</strong> Inserts into Users table + the relevant sub-table (DoctorDetails or PatientDetails) using RETURN_GENERATED_KEYS to link records.
+        </td>
+      </tr>
+      <tr>
+        <td><span class="mono">DoctorDAO.java</span></td>
+        <td>getAllDoctors(), getDoctorById()</td>
+        <td>JOINs Users + DoctorDetails tables to build Doctor objects with specialization and fee. Used by Admin view and Patient booking form.</td>
+      </tr>
+      <tr>
+        <td><span class="mono">PatientDAO.java</span></td>
+        <td>getAllPatients(), getPatientById()</td>
+        <td>JOINs Users + PatientDetails to build full Patient objects. Used by Admin and Doctor dashboards to list patients.</td>
+      </tr>
+      <tr>
+        <td><span class="mono">AppointmentDAO.java</span></td>
+        <td>bookAppointment(), getAppointmentsByPatient(), getAppointmentsByDoctor(), getAllAppointments()</td>
+        <td>
+          <strong>bookAppointment():</strong> INSERTs a new appointment record, returns boolean success.<br/>
+          <strong>getAppointmentsByDoctor():</strong> Used for doctor's live queue — fetches today's appointments for the logged-in doctor.<br/>
+          All queries return typed objects (not raw result sets), keeping controllers clean.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 style="font-size:16px;font-weight:700;color:var(--blue-d);margin:24px 0 12px;">4.4 Services (Business Logic)</h3>
+  <div class="card">
+    <h3>⚙️ QueueService.java</h3>
+    <ul>
+      <li>Manages a daily <strong>in-memory</strong> appointment list (ArrayList).</li>
+      <li><strong>addAppointment(Appointment):</strong> Checks if an identical slot exists; throws <code>SlotConflictException</code> if it does. Otherwise appends.</li>
+      <li><strong>getPosition(Appointment):</strong> Iterates the queue and returns 1-based position index of the appointment (for status display).</li>
+      <li><strong>Purpose:</strong> Acts as an optimistic in-memory buffer so the UI doesn't need to query DB for every queue position update.</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h3>⚙️ DataStorageService.java</h3>
+    <ul>
+      <li>Holds sorted in-memory collections: <code>ArrayList&lt;Doctor&gt;</code>, <code>ArrayList&lt;Patient&gt;</code>, <code>ArrayList&lt;Appointment&gt;</code>.</li>
+      <li><strong>loadDoctors(), loadPatients():</strong> Populate lists from DAO calls.</li>
+      <li><strong>Appointments</strong> are sorted by time using <code>Collections.sort(... Comparator.comparing(Appointment::getTime))</code>.</li>
+      <li><strong>Purpose:</strong> Caches DB data locally for the session — reduces repeated DB round-trips for the same list data.</li>
+    </ul>
+  </div>
+
+  <h3 style="font-size:16px;font-weight:700;color:var(--blue-d);margin:24px 0 12px;">4.5 Controllers</h3>
+  <div class="card">
+    <h3>🖥️ LoginController.java</h3>
+    <ul>
+      <li>Bound to <code>Login.fxml</code> — reads <code>usernameField</code> + <code>passwordField</code> on button click.</li>
+      <li>Calls <code>UserDAO.authenticate()</code>. On success: stores user in <code>Session.setLoggedInUser()</code>.</li>
+      <li>Role-based routing: loads <code>AdminDashboard.fxml</code>, <code>DoctorDashboard.fxml</code>, or <code>PatientBooking.fxml</code> based on <code>user.getRole()</code>.</li>
+      <li>On failure: shows red error message in <code>errorLabel</code>.</li>
+      <li>Catches <code>SQLException</code> separately to inform user if DB is unreachable.</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h3>🖥️ AdminController.java</h3>
+    <ul>
+      <li>Provides three navigation options: <strong>View Doctors</strong>, <strong>View Patients</strong>, <strong>View Appointments</strong>.</li>
+      <li>Each view dynamically builds a <code>TableView</code> inside <code>cardArea</code> (no separate FXML per sub-view).</li>
+      <li><strong>showDoctors():</strong> Fetches all doctors via DoctorDAO; populates table with Name, Specialization, Fee columns.</li>
+      <li><strong>showPatients():</strong> Fetches all patients; shows Name, Blood Group, Age, Contact.</li>
+      <li><strong>showAppointments():</strong> Fetches all appointments; shows Patient Name, Doctor Name, Date, Time, Status.</li>
+      <li>Uses <code>SimpleStringProperty</code> for TableColumn cell value factories.</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h3>🖥️ DoctorController.java</h3>
+    <ul>
+      <li>Most complex controller — manages a <strong>background thread</strong> for live queue polling.</li>
+      <li><strong>showQueue():</strong> Launches a <code>Thread</code> (<code>liveQueueThread</code>) that polls the DB every 5 seconds for today's appointments for the logged-in doctor.  Updates the UI using <code>Platform.runLater()</code> (thread-safe JavaFX update).</li>
+      <li><strong>showSchedule():</strong> Displays upcoming appointments in a table (sets <code>isViewingSchedule = true</code>).</li>
+      <li><strong>showPatients():</strong> Lists all patients linked to this doctor's appointments.</li>
+      <li><strong>stopThread():</strong> Sets <code>running = false</code> and calls <code>liveQueueThread.interrupt()</code> — called when navigating away to prevent memory leaks.</li>
+      <li>Header label updates dynamically to reflect current view ("My Queue", "My Schedule", "My Patients").</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h3>🖥️ PatientController.java</h3>
+    <ul>
+      <li>Loads to <code>PatientBooking.fxml</code> and populates a <code>ComboBox</code> of doctors from DoctorDAO.</li>
+      <li><strong>showBooking():</strong> Patient picks Doctor → Date (DatePicker) → Time Slot (ComboBox) → clicks "Book Appointment".</li>
+      <li>On booking: calls <code>AppointmentDAO.bookAppointment()</code>; on success shows confirmation card.</li>
+      <li><strong>showAppointments():</strong> Fetches appointments for <code>Session.getLoggedInUser()</code> and renders a VBox of appointment cards with date, doctor name, time, and status.</li>
+      <li>Uses <code>VBox.setVgrow(table, Priority.ALWAYS)</code> for responsive layouts.</li>
+    </ul>
+  </div>
+
+  <h3 style="font-size:16px;font-weight:700;color:var(--blue-d);margin:24px 0 12px;">4.6 Utilities</h3>
+  <table>
+    <thead><tr><th>File</th><th>Purpose</th><th>Key Detail</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><span class="mono">DatabaseConnection.java</span></td>
+        <td>JDBC Connection factory</td>
+        <td>Single static <code>getConnection()</code> method. URL points to Supabase PostgreSQL cluster using the <code>postgresql</code> JDBC driver. Credentials are hardcoded (not ideal for production).</td>
+      </tr>
+      <tr>
+        <td><span class="mono">DatabaseSetup.java</span></td>
+        <td>One-time DB seeder</td>
+        <td>Has its own <code>main()</code> so it can be run independently. Executes batch inserts of sample Admin, Doctor, and Patient accounts into the live DB. Friendly error messages guide setup.</td>
+      </tr>
+      <tr>
+        <td><span class="mono">Session.java</span></td>
+        <td>Global user session</td>
+        <td>Static singleton. <code>setLoggedInUser(User)</code>, <code>getLoggedInUser()</code>, <code>clear()</code>. Allows any controller to access the currently authenticated user without passing it through constructors.</td>
+      </tr>
+      <tr>
+        <td><span class="mono">SlotConflictException.java</span></td>
+        <td>Custom checked exception</td>
+        <td>Thrown by <code>QueueService.addAppointment()</code> when a duplicate time slot is detected. Extends <code>Exception</code> with a message constructor.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- ── SECTION 5 — WORKFLOW ── -->
+  <h2 class="section-title">5. Application Workflow</h2>
+
+  <h3 style="font-size:15px;font-weight:700;color:var(--gray-6);margin-bottom:16px;">5.1 Login & Role Routing</h3>
+  <div class="flow">
+    <div class="flow-step">
+      <div class="flow-num">1</div>
+      <div class="flow-body">
+        <h4>App Launch → Login Screen</h4>
+        <p>Main.java loads Login.fxml into a 900×600 Stage. User sees username/password fields.</p>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-num">2</div>
+      <div class="flow-body">
+        <h4>Credential Submission</h4>
+        <p>LoginController reads fields → calls <code>UserDAO.authenticate()</code> → SQL SELECT on Users table.</p>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-num">3</div>
+      <div class="flow-body">
+        <h4>Session Storage</h4>
+        <p>Authenticated User object (Doctor/Patient/Admin) stored in <code>Session.setLoggedInUser()</code>.</p>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-num">4</div>
+      <div class="flow-body">
+        <h4>Role-Based Navigation</h4>
+        <p>Role = "Admin" → AdminDashboard.fxml | "Doctor" → DoctorDashboard.fxml | "Patient" → PatientBooking.fxml</p>
+      </div>
+    </div>
+  </div>
+
+  <h3 style="font-size:15px;font-weight:700;color:var(--gray-6);margin:24px 0 16px;">5.2 Patient Books an Appointment</h3>
+  <div class="flow">
+    <div class="flow-step">
+      <div class="flow-num">1</div>
+      <div class="flow-body">
+        <h4>Patient Dashboard Loads</h4>
+        <p>PatientController.initialize() → DoctorDAO.getAllDoctors() → populates doctor ComboBox.</p>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-num">2</div>
+      <div class="flow-body">
+        <h4>Selections Made</h4>
+        <p>Patient picks Doctor, Date (DatePicker), Time Slot (ComboBox with hardcoded slots e.g. "09:00", "10:00").</p>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-num">3</div>
+      <div class="flow-body">
+        <h4>Book Appointment Button</h4>
+        <p>Creates Appointment object → calls AppointmentDAO.bookAppointment() → SQL INSERT into Appointments table.</p>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-num">4</div>
+      <div class="flow-body">
+        <h4>Conflict Check + Confirmation</h4>
+        <p>QueueService checks if slot is free. If OK → success card shown. If conflict → SlotConflictException message shown to user.</p>
+      </div>
+    </div>
+  </div>
+
+  <h3 style="font-size:15px;font-weight:700;color:var(--gray-6);margin:24px 0 16px;">5.3 Doctor's Real-Time Queue</h3>
+  <div class="flow">
+    <div class="flow-step">
+      <div class="flow-num">1</div>
+      <div class="flow-body">
+        <h4>Doctor Logs In → Clicks "View Queue"</h4>
+        <p>DoctorController.showQueue() is triggered.</p>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-num">2</div>
+      <div class="flow-body">
+        <h4>Background Thread Spawned</h4>
+        <p>A new Thread runs in a loop: sleeps 5s → calls AppointmentDAO.getAppointmentsByDoctor() → updates TableView via Platform.runLater().</p>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-num">3</div>
+      <div class="flow-body">
+        <h4>Live UI Updates</h4>
+        <p>Table refreshes every 5 seconds showing patients in queue order by appointment time.</p>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-num">4</div>
+      <div class="flow-body">
+        <h4>Thread Cleanup</h4>
+        <p>stopThread() called on navigation (running=false + interrupt) — prevents zombie threads.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SECTION 6 — DATABASE ── -->
+  <h2 class="section-title">6. Database Design</h2>
+  <table>
+    <thead><tr><th>Table</th><th>Primary Key</th><th>Key Columns</th><th>Purpose</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>Users</strong></td>
+        <td>id (SERIAL)</td>
+        <td>name, username (UNIQUE), password, role</td>
+        <td>Master identity table — all three roles share this. Role = 'Admin'|'Doctor'|'Patient'.</td>
+      </tr>
+      <tr>
+        <td><strong>DoctorDetails</strong></td>
+        <td>doctor_id (FK → Users.id)</td>
+        <td>specialization, consultation_fee</td>
+        <td>Doctor-specific extended data. Linked 1:1 with Users via ON DELETE CASCADE.</td>
+      </tr>
+      <tr>
+        <td><strong>PatientDetails</strong></td>
+        <td>patient_id (FK → Users.id)</td>
+        <td>blood_group, contact_number, age</td>
+        <td>Patient-specific medical data. ON DELETE CASCADE from Users.</td>
+      </tr>
+      <tr>
+        <td><strong>Appointments</strong></td>
+        <td>id (SERIAL)</td>
+        <td>patient_id (FK), doctor_id (FK), appointment_date, appointment_time, status</td>
+        <td>Core booking record. Joins patient and doctor. Queried by date to build today's queue.</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="callout callout-green">
+    <p><strong>Database is hosted on Supabase (cloud PostgreSQL).</strong> This means no local PostgreSQL installation is needed. The JDBC URL in DatabaseConnection.java points directly to the Supabase cluster endpoint. All team members connect to the same live database automatically.</p>
+  </div>
+  <div class="callout callout-amber">
+    <p><strong>schema.sql</strong> creates the four tables from scratch. <strong>seed.sql</strong> inserts TRUNCATE + sample rows for testing: 1 Admin, 2+ Doctors, 3+ Patients, 5+ Appointments spanning multiple dates.</p>
+  </div>
+
+  <!-- ── SECTION 7 — PROGRESS ── -->
+  <h2 class="section-title">7. Progress Report</h2>
+  <div class="summary-grid">
+    <div class="summary-box box-done"><div class="big">11</div><div class="lbl">✅ Completed Items</div></div>
+    <div class="summary-box box-partial"><div class="big">5</div><div class="lbl">🔶 Partially Done</div></div>
+    <div class="summary-box box-todo"><div class="big">8</div><div class="lbl">❌ Not Yet Started</div></div>
+  </div>
+
+  <div class="progress-section">
+    <h3>Feature-Level Completion</h3>
+
+    <div class="prog-item">
+      <div class="prog-label"><span>Project Setup &amp; Maven Build</span><span>100%</span></div>
+      <div class="prog-bar"><div class="prog-fill fill-done" style="width:100%"></div></div>
+    </div>
+    <div class="prog-item">
+      <div class="prog-label"><span>Database Schema &amp; Seed Data</span><span>100%</span></div>
+      <div class="prog-bar"><div class="prog-fill fill-done" style="width:100%"></div></div>
+    </div>
+    <div class="prog-item">
+      <div class="prog-label"><span>Model Layer (User, Doctor, Patient, Appointment)</span><span>100%</span></div>
+      <div class="prog-bar"><div class="prog-fill fill-done" style="width:100%"></div></div>
+    </div>
+    <div class="prog-item">
+      <div class="prog-label"><span>DatabaseConnection.java (JDBC / Supabase)</span><span>100%</span></div>
+      <div class="prog-bar"><div class="prog-fill fill-done" style="width:100%"></div></div>
+    </div>
+    <div class="prog-item">
+      <div class="prog-label"><span>Session Management (Session.java)</span><span>100%</span></div>
+      <div class="prog-bar"><div class="prog-fill fill-done" style="width:100%"></div></div>
+    </div>
+    <div class="prog-item">
+      <div class="prog-label"><span>Login Screen + Authentication Flow</span><span>100%</span></div>
+      <div class="prog-bar"><div class="prog-fill fill-done" style="width:100%"></div></div>
+    </div>
+    <div class="prog-item">
+      <div class="prog-label"><span>Role-Based Dashboard Routing</span><span>100%</span></div>
+      <div class="prog-bar"><div class="prog-fill fill-done" style="width:100%"></div></div>
+    </div>
+    <div class="prog-item">
+      <div class="prog-label"><span>DAO Layer (UserDAO, DoctorDAO, PatientDAO, AppointmentDAO)</span><span>100%</span></div>
+      <div class="prog-bar"><div class="prog-fill fill-done" style="width:100%"></div></div>
+    </div>
+    <div class="prog-item">
+      <div class="prog-label"><span>Admin Dashboard — View Doctors / Patients / Appointments</span><span>100%</span></div>
+      <div class="prog-bar"><div class="prog-fill fill-done" style="width:100%"></div></div>
+    </div>
+    <div class="prog-item">
+      <div class="prog-label"><span>Doctor Dashboard — Real-Time Queue Polling Thread</span><span>100%</span></div>
+      <div class="prog-bar"><div class="prog-fill fill-done" style="width:100%"></div></div>
+    </div>
+    <div class="prog-item">
+      <div class="prog-label"><span>Patient Appointment Booking Flow</span><span>100%</span></div>
+      <div class="prog-bar"><div class="prog-fill fill-done" style="width:100%"></div></div>
+    </div>
+    <div class="prog-item">
+      <div class="prog-label"><span>QueueService (In-memory queue + conflict detection)</span><span>80%</span></div>
+      <div class="prog-bar"><div class="prog-fill fill-partial" style="width:80%"></div></div>
+    </div>
+    <div class="prog-item">
+      <div class="prog-label"><span>UI Styling (JavaFX CSS — cards, tables, buttons)</span><span>75%</span></div>
+      <div class="prog-bar"><div class="prog-fill fill-partial" style="width:75%"></div></div>
+    </div>
+    <div class="prog-item">
+      <div class="prog-label"><span>Patient — View My Appointments Screen</span><span>70%</span></div>
+      <div class="prog-bar"><div class="prog-fill fill-partial" style="width:70%"></div></div>
+    </div>
+    <div class="prog-item">
+      <div class="prog-label"><span>Doctor — Schedule View (upcoming appointments)</span><span>65%</span></div>
+      <div class="prog-bar"><div class="prog-fill fill-partial" style="width:65%"></div></div>
+    </div>
+    <div class="prog-item">
+      <div class="prog-label"><span>Doctor — Mark Appointment as Completed</span><span>30%</span></div>
+      <div class="prog-bar"><div class="prog-fill fill-partial" style="width:30%"></div></div>
+    </div>
+    <div class="prog-item">
+      <div class="prog-label"><span>Admin — Add / Remove Doctors or Patients</span><span>0%</span></div>
+      <div class="prog-bar"><div class="prog-fill fill-todo" style="width:5%"></div></div>
+    </div>
+    <div class="prog-item">
+      <div class="prog-label"><span>Password Hashing (bcrypt / SHA-256)</span><span>0%</span></div>
+      <div class="prog-bar"><div class="prog-fill fill-todo" style="width:5%"></div></div>
+    </div>
+    <div class="prog-item">
+      <div class="prog-label"><span>Input Validation (empty fields, date conflicts, etc.)</span><span>0%</span></div>
+      <div class="prog-bar"><div class="prog-fill fill-todo" style="width:5%"></div></div>
+    </div>
+    <div class="prog-item">
+      <div class="prog-label"><span>Appointment Status Updates (Confirm / Cancel)</span><span>0%</span></div>
+      <div class="prog-bar"><div class="prog-fill fill-todo" style="width:5%"></div></div>
+    </div>
+    <div class="prog-item">
+      <div class="prog-label"><span>Patient Registration (sign-up screen)</span><span>0%</span></div>
+      <div class="prog-bar"><div class="prog-fill fill-todo" style="width:5%"></div></div>
+    </div>
+    <div class="prog-item">
+      <div class="prog-label"><span>Logout Button on All Dashboards</span><span>0%</span></div>
+      <div class="prog-bar"><div class="prog-fill fill-todo" style="width:5%"></div></div>
+    </div>
+    <div class="prog-item">
+      <div class="prog-label"><span>Unit Tests (JUnit)</span><span>0%</span></div>
+      <div class="prog-bar"><div class="prog-fill fill-todo" style="width:5%"></div></div>
+    </div>
+    <div class="prog-item">
+      <div class="prog-label"><span>Error Handling polish (friendly dialogs, not printStackTrace)</span><span>10%</span></div>
+      <div class="prog-bar"><div class="prog-fill fill-todo" style="width:10%"></div></div>
+    </div>
+  </div>
+
+  <!-- ── SECTION 8 — WHAT REMAINS ── -->
+  <h2 class="section-title">8. What Remains to Build</h2>
+
+  <div class="card">
+    <h3>🔴 High Priority (Core Features)</h3>
+    <ol>
+      <li><strong>Logout functionality</strong> — Every dashboard needs a Logout button that calls <code>Session.clear()</code> and returns to Login screen.</li>
+      <li><strong>Appointment Status Update</strong> — Doctor should be able to mark "Pending" appointments as "Confirmed" or "Completed" from the queue. Requires an UPDATE SQL statement in AppointmentDAO.</li>
+      <li><strong>Admin CRUD for Doctors/Patients</strong> — Admin dashboard currently only reads data. Add/Edit/Remove functionality needs forms + UserDAO.insertUser() wiring.</li>
+      <li><strong>Input Validation</strong> — Login fields should not submit when empty. Date picker should not allow past dates. SlotConflictException feedback needs to be surfaced to the user as a dialog, not just a console error.</li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <h3>🟡 Medium Priority (Important but Not Blocking)</h3>
+    <ol>
+      <li><strong>Patient Registration / Sign-Up Screen</strong> — Currently patients must be seeded into the DB. A self-registration FXML form + UserDAO.insertUser() flow is needed.</li>
+      <li><strong>Password Hashing</strong> — Passwords are stored as plain text. BCrypt or SHA-256 hashing should be added in UserDAO before production use.</li>
+      <li><strong>QueueService ↔ DB Integration</strong> — QueueService currently manages an in-memory list. It should be initialised from today's DB appointments on startup, and stay in sync with AppointmentDAO.</li>
+      <li><strong>Doctor schedule full view</strong> — DoctorController.showSchedule() fetches data, but the TableView column configuration needs completing for all fields.</li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <h3>🟢 Low Priority (Polish)</h3>
+    <ol>
+      <li><strong>Error handling improvement</strong> — Replace all <code>e.printStackTrace()</code> calls with JavaFX Alert dialogs.</li>
+      <li><strong>Loading spinners</strong> — DB calls on the UI thread can freeze the window. Long queries should run in a <code>Task&lt;Void&gt;</code> with a ProgressIndicator.</li>
+      <li><strong>Unit Tests</strong> — DAO methods and QueueService logic should have JUnit 5 tests for correctness.</li>
+      <li><strong>Externalise DB credentials</strong> — Move URL/USER/PASSWORD from DatabaseConnection.java into a <code>.env</code> or <code>application.properties</code> file.</li>
+      <li><strong>Appointment cancellation by patient</strong> — Patient should be able to cancel a pending appointment.</li>
+    </ol>
+  </div>
+
+  <!-- ── SECTION 9 — HOW TO RUN ── -->
+  <h2 class="section-title">9. How to Run the Application</h2>
+  <div class="card">
+    <h3>🚀 Prerequisites</h3>
+    <ul>
+      <li>Java 17 or later must be installed. Run: <code>java -version</code></li>
+      <li>No PostgreSQL local install needed — DB is on Supabase cloud.</li>
+      <li>Maven is bundled inside <code>apache-maven-3.9.6/</code> — no global install required.</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h3>▶️ Run the App</h3>
+    <p><strong>Windows (bundled Maven):</strong></p>
+    <pre style="background:#0F172A;color:#A5F3FC;border-radius:8px;padding:14px 18px;font-size:13px;">.\apache-maven-3.9.6\bin\mvn.cmd clean compile javafx:run</pre>
+    <br/>
+    <p><strong>Windows (global Maven installed):</strong></p>
+    <pre style="background:#0F172A;color:#A5F3FC;border-radius:8px;padding:14px 18px;font-size:13px;">mvn clean compile javafx:run</pre>
+  </div>
+  <div class="card">
+    <h3>🔑 Login Credentials (from CREDENTIALS.md)</h3>
+    <table>
+      <thead><tr><th>Role</th><th>Username</th><th>Password</th></tr></thead>
+      <tbody>
+        <tr><td><span class="tag tag-red">Admin</span></td><td><span class="mono">admin</span></td><td><span class="mono">admin123</span></td></tr>
+        <tr><td><span class="tag tag-blue">Doctor</span></td><td><span class="mono">dr.smith</span></td><td><span class="mono">doctor123</span></td></tr>
+        <tr><td><span class="tag tag-green">Patient</span></td><td><span class="mono">john.doe</span></td><td><span class="mono">patient123</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div style="text-align:center;margin-top:56px;padding-top:28px;border-top:1px solid var(--gray-3);color:var(--gray-4);font-size:12px;">
+    Smart Hospital Appointment &amp; Real-Time Queue Management System — Project Report · Generated March 29, 2026
+  </div>
+</div>
+</body>
+</html>

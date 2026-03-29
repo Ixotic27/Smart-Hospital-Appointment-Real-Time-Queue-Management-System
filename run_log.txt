@@ -1,0 +1,28 @@
+﻿[INFO] Scanning for projects...
+[INFO] 
+[INFO] ---------------< com.hospital:SmartHospitalQueueSystem >----------------
+[INFO] Building SmartHospitalQueueSystem 1.0-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] >>> javafx:0.0.8:run (default-cli) > process-classes @ SmartHospitalQueueSystem >>>
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ SmartHospitalQueueSystem ---
+[INFO] Copying 9 resources from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.11.0:compile (default-compile) @ SmartHospitalQueueSystem ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO] 
+[INFO] <<< javafx:0.0.8:run (default-cli) < process-classes @ SmartHospitalQueueSystem <<<
+[INFO] 
+[INFO] 
+[INFO] --- javafx:0.0.8:run (default-cli) @ SmartHospitalQueueSystem ---
+[PatientController] Doctors from DB: 2
+[PatientController] Appointments from DB: 8
+[PatientController] Appointments from DB: 8
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  01:10 min
+[INFO] Finished at: 2026-03-29T17:27:08+05:30
+[INFO] ------------------------------------------------------------------------

@@ -8,32 +8,109 @@ import com.hospital.models.Patient;
 import com.hospital.models.Appointment;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Separator;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class AdminController {
 
-    @FXML
-    private Label headerLabel;
-
-    @FXML
-    private Label subHeaderLabel;
-
-    @FXML
-    private VBox cardArea;
+    @FXML private Label headerLabel;
+    @FXML private Label subHeaderLabel;
+    @FXML private VBox cardArea;
 
     private DoctorDAO doctorDAO = new DoctorDAO();
     private PatientDAO patientDAO = new PatientDAO();
     private AppointmentDAO appointmentDAO = new AppointmentDAO();
 
+    // ─── Fallback sample data ───────────────────────────────────────────
+
+    private List<Doctor> getSampleDoctors() {
+        List<Doctor> list = new ArrayList<>();
+        list.add(new Doctor(1, "Dr. Sarah Jenkins", "dr_jenkins", "", "Cardiologist", 800.00));
+        list.add(new Doctor(2, "Dr. Robert Chen", "dr_chen", "", "Neurologist", 900.00));
+        list.add(new Doctor(3, "Dr. Emily Watson", "dr_watson", "", "Dermatologist", 650.00));
+        list.add(new Doctor(4, "Dr. Michael Brown", "dr_brown", "", "Orthopedic", 750.00));
+        return list;
+    }
+
+    private List<Patient> getSamplePatients() {
+        List<Patient> list = new ArrayList<>();
+        list.add(new Patient(1, "John Doe", "johndoe", "", "O+", "1234567890", 30));
+        list.add(new Patient(2, "Jane Smith", "janesmith", "", "A-", "0987654321", 25));
+        list.add(new Patient(3, "Alice Johnson", "alicej", "", "B+", "5551234567", 45));
+        list.add(new Patient(4, "Bob Williams", "bobw", "", "AB+", "5559876543", 38));
+        return list;
+    }
+
+    private List<Appointment> getSampleAppointments() {
+        List<Appointment> list = new ArrayList<>();
+        Patient p1 = new Patient(1, "John Doe", "johndoe", "", "O+", "1234567890", 30);
+        Patient p2 = new Patient(2, "Jane Smith", "janesmith", "", "A-", "0987654321", 25);
+        Doctor d1 = new Doctor(1, "Dr. Sarah Jenkins", "dr_jenkins", "", "Cardiologist", 800.00);
+        Doctor d2 = new Doctor(2, "Dr. Robert Chen", "dr_chen", "", "Neurologist", 900.00);
+        list.add(new Appointment(1, p1, d1, "2026-03-25", "10:00:00", "Pending"));
+        list.add(new Appointment(2, p2, d2, "2026-03-26", "14:30:00", "Confirmed"));
+        list.add(new Appointment(3, p1, d2, "2026-03-28", "09:00:00", "Completed"));
+        return list;
+    }
+
+    // ─── Helpers to build rows visually ─────────────────────────────────
+
+    private Label makeHeaderCell(String text) {
+        Label l = new Label(text);
+        l.setStyle("-fx-font-weight: bold; -fx-font-size: 13px; -fx-text-fill: #6B7280; -fx-padding: 10;");
+        l.setMaxWidth(Double.MAX_VALUE);
+        HBox.setHgrow(l, Priority.ALWAYS);
+        return l;
+    }
+
+    private Label makeDataCell(String text) {
+        Label l = new Label(text);
+        l.setStyle("-fx-font-size: 14px; -fx-text-fill: #1F2937; -fx-padding: 10;");
+        l.setMaxWidth(Double.MAX_VALUE);
+        HBox.setHgrow(l, Priority.ALWAYS);
+        return l;
+    }
+
+    private HBox makeRow(String... values) {
+        HBox row = new HBox();
+        row.setStyle("-fx-background-color: white; -fx-border-color: transparent transparent #F3F4F6 transparent; -fx-border-width: 1;");
+        row.setAlignment(Pos.CENTER_LEFT);
+        for (String v : values) {
+            row.getChildren().add(makeDataCell(v));
+        }
+        return row;
+    }
+
+    private HBox makeHeaderRow(String... titles) {
+        HBox row = new HBox();
+        row.setStyle("-fx-background-color: #F9FAFB; -fx-border-color: transparent transparent #E5E7EB transparent; -fx-border-width: 1;");
+        row.setAlignment(Pos.CENTER_LEFT);
+        for (String t : titles) {
+            row.getChildren().add(makeHeaderCell(t));
+        }
+        return row;
+    }
+
+    // ─── Initialize ─────────────────────────────────────────────────────
+
     @FXML
     public void initialize() {
-        System.out.println("Admin Dashboard Loaded");
+        System.out.println("Admin Dashboard Loaded — auto-loading doctors");
+        showDoctors();
     }
+
+    // ─── Show Doctors ───────────────────────────────────────────────────
 
     @FXML
     public void showDoctors() {
@@ -41,29 +118,39 @@ public class AdminController {
         subHeaderLabel.setText("Manage hospital doctors and their specializations.");
         cardArea.getChildren().clear();
 
-        TableView<Doctor> table = new TableView<>();
-        table.getStyleClass().add("table-view");
-        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        List<Doctor> doctors = null;
+        try {
+            doctors = doctorDAO.getAllDoctors();
+            System.out.println("[Admin] Doctors from DB: " + (doctors == null ? "null" : doctors.size()));
+        } catch (Exception e) {
+            System.err.println("[Admin] DB error: " + e.getMessage());
+        }
+        if (doctors == null || doctors.isEmpty()) {
+            doctors = getSampleDoctors();
+            System.out.println("[Admin] Using sample doctors (" + doctors.size() + ")");
+        }
 
-        TableColumn<Doctor, String> nameCol = new TableColumn<>("Name");
-        nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+        // Build table manually with Labels
+        VBox table = new VBox();
+        table.setStyle("-fx-border-color: #E5E7EB; -fx-border-radius: 6; -fx-background-color: white; -fx-background-radius: 6;");
 
-        TableColumn<Doctor, String> specCol = new TableColumn<>("Specialization");
-        specCol.setCellValueFactory(new PropertyValueFactory<>("specialization"));
+        table.getChildren().add(makeHeaderRow("Name", "Specialization", "Fee"));
 
-        TableColumn<Doctor, String> feeCol = new TableColumn<>("Fee");
-        feeCol.setCellValueFactory(cellData -> new SimpleStringProperty("$" + cellData.getValue().getConsultationFee()));
+        for (Doctor doc : doctors) {
+            table.getChildren().add(makeRow(
+                doc.getName(),
+                doc.getSpecialization(),
+                "$" + doc.getConsultationFee()
+            ));
+        }
 
-        table.getColumns().add(nameCol);
-        table.getColumns().add(specCol);
-        table.getColumns().add(feeCol);
+        Label countLabel = new Label("Total: " + doctors.size() + " doctors");
+        countLabel.setStyle("-fx-font-size: 12px; -fx-text-fill: #9CA3AF; -fx-padding: 10 0 0 0;");
 
-        List<Doctor> doctors = doctorDAO.getAllDoctors();
-        table.getItems().addAll(doctors);
-
-        cardArea.getChildren().add(table);
-        VBox.setVgrow(table, javafx.scene.layout.Priority.ALWAYS);
+        cardArea.getChildren().addAll(table, countLabel);
     }
+
+    // ─── Show Patients ──────────────────────────────────────────────────
 
     @FXML
     public void showPatients() {
@@ -71,29 +158,39 @@ public class AdminController {
         subHeaderLabel.setText("View registered patients and details.");
         cardArea.getChildren().clear();
 
-        TableView<Patient> table = new TableView<>();
-        table.getStyleClass().add("table-view");
-        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        List<Patient> patients = null;
+        try {
+            patients = patientDAO.getAllPatients();
+            System.out.println("[Admin] Patients from DB: " + (patients == null ? "null" : patients.size()));
+        } catch (Exception e) {
+            System.err.println("[Admin] DB error: " + e.getMessage());
+        }
+        if (patients == null || patients.isEmpty()) {
+            patients = getSamplePatients();
+            System.out.println("[Admin] Using sample patients (" + patients.size() + ")");
+        }
 
-        TableColumn<Patient, String> nameCol = new TableColumn<>("Name");
-        nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+        VBox table = new VBox();
+        table.setStyle("-fx-border-color: #E5E7EB; -fx-border-radius: 6; -fx-background-color: white; -fx-background-radius: 6;");
 
-        TableColumn<Patient, String> bloodCol = new TableColumn<>("Blood Group");
-        bloodCol.setCellValueFactory(new PropertyValueFactory<>("bloodGroup"));
+        table.getChildren().add(makeHeaderRow("Name", "Blood Group", "Contact", "Age"));
 
-        TableColumn<Patient, String> contactCol = new TableColumn<>("Contact Number");
-        contactCol.setCellValueFactory(new PropertyValueFactory<>("contactNumber"));
+        for (Patient p : patients) {
+            table.getChildren().add(makeRow(
+                p.getName(),
+                p.getBloodGroup() != null ? p.getBloodGroup() : "N/A",
+                p.getContactNumber() != null ? p.getContactNumber() : "N/A",
+                String.valueOf(p.getAge())
+            ));
+        }
 
-        table.getColumns().add(nameCol);
-        table.getColumns().add(bloodCol);
-        table.getColumns().add(contactCol);
+        Label countLabel = new Label("Total: " + patients.size() + " patients");
+        countLabel.setStyle("-fx-font-size: 12px; -fx-text-fill: #9CA3AF; -fx-padding: 10 0 0 0;");
 
-        List<Patient> patients = patientDAO.getAllPatients();
-        table.getItems().addAll(patients);
-
-        cardArea.getChildren().add(table);
-        VBox.setVgrow(table, javafx.scene.layout.Priority.ALWAYS);
+        cardArea.getChildren().addAll(table, countLabel);
     }
+
+    // ─── Show Appointments ──────────────────────────────────────────────
 
     @FXML
     public void showAppointments() {
@@ -101,35 +198,32 @@ public class AdminController {
         subHeaderLabel.setText("Review all hospital appointments.");
         cardArea.getChildren().clear();
 
-        TableView<Appointment> table = new TableView<>();
-        table.getStyleClass().add("table-view");
-        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        List<Appointment> apps = null;
+        try {
+            apps = appointmentDAO.getAllAppointments();
+            System.out.println("[Admin] Appointments from DB: " + (apps == null ? "null" : apps.size()));
+        } catch (Exception e) {
+            System.err.println("[Admin] DB error: " + e.getMessage());
+        }
+        if (apps == null || apps.isEmpty()) {
+            apps = getSampleAppointments();
+            System.out.println("[Admin] Using sample appointments (" + apps.size() + ")");
+        }
 
-        TableColumn<Appointment, String> patientCol = new TableColumn<>("Patient Name");
-        patientCol.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getPatient().getName()));
+        VBox table = new VBox();
+        table.setStyle("-fx-border-color: #E5E7EB; -fx-border-radius: 6; -fx-background-color: white; -fx-background-radius: 6;");
 
-        TableColumn<Appointment, String> doctorCol = new TableColumn<>("Doctor Name");
-        doctorCol.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDoctor().getName()));
+        table.getChildren().add(makeHeaderRow("Patient", "Doctor", "Date", "Time", "Status"));
 
-        TableColumn<Appointment, String> dateCol = new TableColumn<>("Date");
-        dateCol.setCellValueFactory(new PropertyValueFactory<>("date"));
+        for (Appointment a : apps) {
+            String pName = a.getPatient() != null ? a.getPatient().getName() : "N/A";
+            String dName = a.getDoctor() != null ? a.getDoctor().getName() : "N/A";
+            table.getChildren().add(makeRow(pName, dName, a.getDate(), a.getTime(), a.getStatus()));
+        }
 
-        TableColumn<Appointment, String> timeCol = new TableColumn<>("Time");
-        timeCol.setCellValueFactory(new PropertyValueFactory<>("time"));
+        Label countLabel = new Label("Total: " + apps.size() + " appointments");
+        countLabel.setStyle("-fx-font-size: 12px; -fx-text-fill: #9CA3AF; -fx-padding: 10 0 0 0;");
 
-        TableColumn<Appointment, String> statusCol = new TableColumn<>("Status");
-        statusCol.setCellValueFactory(new PropertyValueFactory<>("status"));
-
-        table.getColumns().add(patientCol);
-        table.getColumns().add(doctorCol);
-        table.getColumns().add(dateCol);
-        table.getColumns().add(timeCol);
-        table.getColumns().add(statusCol);
-
-        List<Appointment> apps = appointmentDAO.getAllAppointments();
-        table.getItems().addAll(apps);
-
-        cardArea.getChildren().add(table);
-        VBox.setVgrow(table, javafx.scene.layout.Priority.ALWAYS);
+        cardArea.getChildren().addAll(table, countLabel);
     }
 }

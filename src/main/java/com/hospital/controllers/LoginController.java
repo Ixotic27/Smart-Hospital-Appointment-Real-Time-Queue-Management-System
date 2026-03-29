@@ -41,10 +41,6 @@ public class LoginController {
                 // Set global session
                 com.hospital.utils.Session.setLoggedInUser(user);
 
-                // Dummy data storage init to utilize Member 2's code!
-                com.hospital.services.DataStorageService storage = new com.hospital.services.DataStorageService();
-                storage.loadDoctors(new com.hospital.dao.DoctorDAO().getAllDoctors());
-
                 // Load the appropriate dashboard
                 String fxmlFile = "";
                 if (user.getRole().equalsIgnoreCase("Admin")) {

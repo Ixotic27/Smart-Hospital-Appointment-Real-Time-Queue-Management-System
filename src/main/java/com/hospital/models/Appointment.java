@@ -1,68 +1,44 @@
 package com.hospital.models;
 
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+
 public class Appointment {
-    private int appointmentId;
+    private SimpleIntegerProperty appointmentId;
     private Patient patient;
     private Doctor doctor;
-    private String date;
-    private String time;
-    private String status;
+    private SimpleStringProperty date;
+    private SimpleStringProperty time;
+    private SimpleStringProperty status;
 
     public Appointment(int appointmentId, Patient patient, Doctor doctor, String date, String time, String status) {
-        this.appointmentId = appointmentId;
+        this.appointmentId = new SimpleIntegerProperty(appointmentId);
         this.patient = patient;
         this.doctor = doctor;
-        this.date = date;
-        this.time = time;
-        this.status = status;
+        this.date = new SimpleStringProperty(date);
+        this.time = new SimpleStringProperty(time);
+        this.status = new SimpleStringProperty(status);
     }
 
-    public int getAppointmentId() {
-        return appointmentId;
-    }
+    public int getAppointmentId() { return appointmentId.get(); }
+    public void setAppointmentId(int id) { this.appointmentId.set(id); }
+    public SimpleIntegerProperty appointmentIdProperty() { return appointmentId; }
 
-    public void setAppointmentId(int appointmentId) {
-        this.appointmentId = appointmentId;
-    }
+    public Patient getPatient() { return patient; }
+    public void setPatient(Patient patient) { this.patient = patient; }
 
-    public Patient getPatient() {
-        return patient;
-    }
+    public Doctor getDoctor() { return doctor; }
+    public void setDoctor(Doctor doctor) { this.doctor = doctor; }
 
-    public void setPatient(Patient patient) {
-        this.patient = patient;
-    }
+    public String getDate() { return date.get(); }
+    public void setDate(String date) { this.date.set(date); }
+    public SimpleStringProperty dateProperty() { return date; }
 
-    public Doctor getDoctor() {
-        return doctor;
-    }
+    public String getTime() { return time.get(); }
+    public void setTime(String time) { this.time.set(time); }
+    public SimpleStringProperty timeProperty() { return time; }
 
-    public void setDoctor(Doctor doctor) {
-        this.doctor = doctor;
-    }
-
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
-
-    public String getTime() {
-        return time;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
+    public String getStatus() { return status.get(); }
+    public void setStatus(String status) { this.status.set(status); }
+    public SimpleStringProperty statusProperty() { return status; }
 }
