@@ -24,16 +24,18 @@ import java.util.List;
 
 public class AdminController {
 
-    @FXML private Label headerLabel;
-    @FXML private Label subHeaderLabel;
-    @FXML private VBox cardArea;
+    @FXML
+    private Label headerLabel;
+    @FXML
+    private Label subHeaderLabel;
+    @FXML
+    private VBox cardArea;
 
     private DoctorDAO doctorDAO = new DoctorDAO();
     private PatientDAO patientDAO = new PatientDAO();
     private AppointmentDAO appointmentDAO = new AppointmentDAO();
 
-    // ─── Fallback sample data ───────────────────────────────────────────
-
+    // Fallback sample data
     private List<Doctor> getSampleDoctors() {
         List<Doctor> list = new ArrayList<>();
         list.add(new Doctor(1, "Dr. Sarah Jenkins", "dr_jenkins", "", "Cardiologist", 800.00));
@@ -64,7 +66,7 @@ public class AdminController {
         return list;
     }
 
-    // ─── Helpers to build rows visually ─────────────────────────────────
+    // Helpers to build rows visually
 
     private Label makeHeaderCell(String text) {
         Label l = new Label(text);
@@ -84,7 +86,8 @@ public class AdminController {
 
     private HBox makeRow(String... values) {
         HBox row = new HBox();
-        row.setStyle("-fx-background-color: white; -fx-border-color: transparent transparent #F3F4F6 transparent; -fx-border-width: 1;");
+        row.setStyle(
+                "-fx-background-color: white; -fx-border-color: transparent transparent #F3F4F6 transparent; -fx-border-width: 1;");
         row.setAlignment(Pos.CENTER_LEFT);
         for (String v : values) {
             row.getChildren().add(makeDataCell(v));
@@ -94,7 +97,8 @@ public class AdminController {
 
     private HBox makeHeaderRow(String... titles) {
         HBox row = new HBox();
-        row.setStyle("-fx-background-color: #F9FAFB; -fx-border-color: transparent transparent #E5E7EB transparent; -fx-border-width: 1;");
+        row.setStyle(
+                "-fx-background-color: #F9FAFB; -fx-border-color: transparent transparent #E5E7EB transparent; -fx-border-width: 1;");
         row.setAlignment(Pos.CENTER_LEFT);
         for (String t : titles) {
             row.getChildren().add(makeHeaderCell(t));
@@ -102,7 +106,7 @@ public class AdminController {
         return row;
     }
 
-    // ─── Initialize ─────────────────────────────────────────────────────
+    // Initialize
 
     @FXML
     public void initialize() {
@@ -110,7 +114,7 @@ public class AdminController {
         showDoctors();
     }
 
-    // ─── Show Doctors ───────────────────────────────────────────────────
+    // Show Doctors
 
     @FXML
     public void showDoctors() {
@@ -132,16 +136,16 @@ public class AdminController {
 
         // Build table manually with Labels
         VBox table = new VBox();
-        table.setStyle("-fx-border-color: #E5E7EB; -fx-border-radius: 6; -fx-background-color: white; -fx-background-radius: 6;");
+        table.setStyle(
+                "-fx-border-color: #E5E7EB; -fx-border-radius: 6; -fx-background-color: white; -fx-background-radius: 6;");
 
         table.getChildren().add(makeHeaderRow("Name", "Specialization", "Fee"));
 
         for (Doctor doc : doctors) {
             table.getChildren().add(makeRow(
-                doc.getName(),
-                doc.getSpecialization(),
-                "$" + doc.getConsultationFee()
-            ));
+                    doc.getName(),
+                    doc.getSpecialization(),
+                    "$" + doc.getConsultationFee()));
         }
 
         Label countLabel = new Label("Total: " + doctors.size() + " doctors");
@@ -150,7 +154,7 @@ public class AdminController {
         cardArea.getChildren().addAll(table, countLabel);
     }
 
-    // ─── Show Patients ──────────────────────────────────────────────────
+    // Show Patients
 
     @FXML
     public void showPatients() {
@@ -171,17 +175,17 @@ public class AdminController {
         }
 
         VBox table = new VBox();
-        table.setStyle("-fx-border-color: #E5E7EB; -fx-border-radius: 6; -fx-background-color: white; -fx-background-radius: 6;");
+        table.setStyle(
+                "-fx-border-color: #E5E7EB; -fx-border-radius: 6; -fx-background-color: white; -fx-background-radius: 6;");
 
         table.getChildren().add(makeHeaderRow("Name", "Blood Group", "Contact", "Age"));
 
         for (Patient p : patients) {
             table.getChildren().add(makeRow(
-                p.getName(),
-                p.getBloodGroup() != null ? p.getBloodGroup() : "N/A",
-                p.getContactNumber() != null ? p.getContactNumber() : "N/A",
-                String.valueOf(p.getAge())
-            ));
+                    p.getName(),
+                    p.getBloodGroup() != null ? p.getBloodGroup() : "N/A",
+                    p.getContactNumber() != null ? p.getContactNumber() : "N/A",
+                    String.valueOf(p.getAge())));
         }
 
         Label countLabel = new Label("Total: " + patients.size() + " patients");
@@ -190,7 +194,7 @@ public class AdminController {
         cardArea.getChildren().addAll(table, countLabel);
     }
 
-    // ─── Show Appointments ──────────────────────────────────────────────
+    // Show Appointments
 
     @FXML
     public void showAppointments() {
@@ -211,7 +215,8 @@ public class AdminController {
         }
 
         VBox table = new VBox();
-        table.setStyle("-fx-border-color: #E5E7EB; -fx-border-radius: 6; -fx-background-color: white; -fx-background-radius: 6;");
+        table.setStyle(
+                "-fx-border-color: #E5E7EB; -fx-border-radius: 6; -fx-background-color: white; -fx-background-radius: 6;");
 
         table.getChildren().add(makeHeaderRow("Patient", "Doctor", "Date", "Time", "Status"));
 
