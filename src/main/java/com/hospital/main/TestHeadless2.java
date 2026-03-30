@@ -17,7 +17,7 @@ public class TestHeadless2 extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        com.hospital.utils.Session.setLoggedInUser(new com.hospital.models.Patient(4, "John Doe", "johndoe", "pass", "O+", "1", 30));
+        com.hospital.utils.Session.setLoggedInUser(new com.hospital.models.Patient(4, "Aditya Singh", "aditya", "pass", "O+", "1", 30));
         
         javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(getClass().getResource("/views/PatientBooking.fxml"));
         javafx.scene.Parent root = loader.load();

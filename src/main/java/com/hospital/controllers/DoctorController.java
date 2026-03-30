@@ -83,9 +83,9 @@ public class DoctorController {
 
     private List<Appointment> getSampleDoctorAppointments() {
         List<Appointment> list = new ArrayList<>();
-        Patient p1 = new Patient(1, "John Doe", "johndoe", "", "O+", "1234567890", 30);
-        Patient p2 = new Patient(2, "Jane Smith", "janesmith", "", "A-", "0987654321", 25);
-        Doctor d = new Doctor(2, "Dr. Sarah Jenkins", "dr_jenkins", "", "Cardiologist", 800.00);
+        Patient p1 = new Patient(1, "Aditya Singh", "aditya", "", "O+", "1234567890", 30);
+        Patient p2 = new Patient(2, "Vivek Bora", "vivek", "", "A-", "0987654321", 25);
+        Doctor d = new Doctor(2, "Dr. Sonam Dubey", "dr_dubey", "", "Cardiologist", 800.00);
         list.add(new Appointment(1, p1, d, "2026-03-25", "10:00:00", "Pending"));
         list.add(new Appointment(2, p2, d, "2026-03-26", "14:30:00", "Confirmed"));
         return list;
@@ -93,8 +93,8 @@ public class DoctorController {
 
     private List<Patient> getSamplePatients() {
         List<Patient> list = new ArrayList<>();
-        list.add(new Patient(1, "John Doe", "johndoe", "", "O+", "1234567890", 30));
-        list.add(new Patient(2, "Jane Smith", "janesmith", "", "A-", "0987654321", 25));
+        list.add(new Patient(1, "Aditya Singh", "aditya", "", "O+", "1234567890", 30));
+        list.add(new Patient(2, "Vivek Bora", "vivek", "", "A-", "0987654321", 25));
         list.add(new Patient(3, "Alice Johnson", "alicej", "", "B+", "5551234567", 45));
         return list;
     }

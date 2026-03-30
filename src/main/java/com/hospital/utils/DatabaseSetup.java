@@ -21,15 +21,15 @@ public class DatabaseSetup {
             stmt.addBatch();
 
             // Doctor 1
-            stmt.setString(1, "Dr. Sarah Jenkins");
-            stmt.setString(2, "dr_jenkins");
+            stmt.setString(1, "Dr. Sonam Dubey");
+            stmt.setString(2, "dr_dubey");
             stmt.setString(3, "doctorPass");
             stmt.setString(4, "Doctor");
             stmt.addBatch();
 
             // Patient 1
-            stmt.setString(1, "John Doe");
-            stmt.setString(2, "johndoe");
+            stmt.setString(1, "Aditya Singh");
+            stmt.setString(2, "aditya");
             stmt.setString(3, "patient123");
             stmt.setString(4, "Patient");
             stmt.addBatch();

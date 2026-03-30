@@ -40,16 +40,16 @@ public class PatientController {
 
     private List<Doctor> getSampleDoctors() {
         List<Doctor> list = new ArrayList<>();
-        list.add(new Doctor(2, "Dr. Sarah Jenkins", "dr_jenkins", "", "Cardiologist", 800.00));
-        list.add(new Doctor(3, "Dr. Robert Chen", "dr_chen", "", "Neurologist", 900.00));
+        list.add(new Doctor(2, "Dr. Sonam Dubey", "dr_dubey", "", "Cardiologist", 800.00));
+        list.add(new Doctor(3, "Dr. Shivam Singh", "dr_singh", "", "Neurologist", 900.00));
         list.add(new Doctor(4, "Dr. Emily Watson", "dr_watson", "", "Dermatologist", 650.00));
         return list;
     }
 
     private List<Appointment> getSamplePatientAppointments() {
         List<Appointment> list = new ArrayList<>();
-        Doctor d1 = new Doctor(2, "Dr. Sarah Jenkins", "dr_jenkins", "", "Cardiologist", 800.00);
-        Doctor d2 = new Doctor(3, "Dr. Robert Chen", "dr_chen", "", "Neurologist", 900.00);
+        Doctor d1 = new Doctor(2, "Dr. Sonam Dubey", "dr_dubey", "", "Cardiologist", 800.00);
+        Doctor d2 = new Doctor(3, "Dr. Shivam Singh", "dr_singh", "", "Neurologist", 900.00);
         Patient self = getLoggedInPatient();
         list.add(new Appointment(1, self, d1, "2026-03-25", "10:00:00", "Pending"));
         list.add(new Appointment(2, self, d2, "2026-03-28", "14:30:00", "Confirmed"));
@@ -135,7 +135,7 @@ public class PatientController {
         if (sessionUser instanceof Patient) {
             return (Patient) sessionUser;
         }
-        return new Patient(4, "John Doe", "johndoe", "patient123", "O+", "1234567890", 30);
+        return new Patient(4, "Aditya Singh", "aditya", "patient123", "O+", "1234567890", 30);
     }
 
     // ─── Book Appointment ───────────────────────────────────────────────
