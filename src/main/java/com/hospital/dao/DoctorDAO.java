@@ -9,6 +9,7 @@ public class DoctorDAO {
 
     public Doctor getDoctorById(int id) {
         String sql = "SELECT u.*, d.specialization, d.consultationFee FROM Users u JOIN DoctorDetails d ON u.id = d.doctor_id WHERE u.id = ?";
+        
         try (Connection conn = DatabaseConnection.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, id);
@@ -23,7 +24,8 @@ public class DoctorDAO {
                             rs.getDouble("consultationFee"));
                 }
             }
-        } catch (SQLException e) {
+        } 
+        catch (SQLException e) {
             e.printStackTrace();
         }
         return null;
@@ -32,6 +34,7 @@ public class DoctorDAO {
     public ArrayList<Doctor> getAllDoctors() {
         ArrayList<Doctor> doctors = new ArrayList<>();
         String sql = "SELECT u.*, d.specialization, d.consultationFee FROM Users u JOIN DoctorDetails d ON u.id = d.doctor_id WHERE u.role = 'Doctor'";
+
         try (Connection conn = DatabaseConnection.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql);
                 ResultSet rs = stmt.executeQuery()) {
@@ -45,7 +48,8 @@ public class DoctorDAO {
                         rs.getString("specialization"),
                         rs.getDouble("consultationFee")));
             }
-        } catch (SQLException e) {
+        } 
+        catch (SQLException e) {
             e.printStackTrace();
         }
         return doctors;

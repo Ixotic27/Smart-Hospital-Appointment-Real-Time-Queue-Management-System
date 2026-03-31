@@ -21,7 +21,6 @@ public class AppointmentDAO {
         } catch (SQLException e) {
             System.err.println("[AppointmentDAO] SQL Error: " + e.getMessage() + " (SQLState=" + e.getSQLState() + ")");
             e.printStackTrace();
-            // Surface the real DB error message to the caller
             throw new RuntimeException("Database error: " + e.getMessage(), e);
         }
     }
