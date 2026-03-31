@@ -42,7 +42,7 @@ public class PatientController {
         List<Doctor> list = new ArrayList<>();
         list.add(new Doctor(2, "Dr. Sonam Dubey", "dr_dubey", "", "Cardiologist", 800.00));
         list.add(new Doctor(3, "Dr. Shivam Singh", "dr_singh", "", "Neurologist", 900.00));
-        list.add(new Doctor(4, "Dr. Emily Watson", "dr_watson", "", "Dermatologist", 650.00));
+        list.add(new Doctor(4, "Dr. Aarti Sharma", "dr_sharma", "", "Dermatologist", 650.00));
         return list;
     }
 

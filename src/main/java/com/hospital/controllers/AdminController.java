@@ -40,8 +40,8 @@ public class AdminController {
         List<Doctor> list = new ArrayList<>();
         list.add(new Doctor(1, "Dr. Sonam Dubey", "dr_dubey", "", "Cardiologist", 800.00));
         list.add(new Doctor(2, "Dr. Shivam Singh", "dr_singh", "", "Neurologist", 900.00));
-        list.add(new Doctor(3, "Dr. Emily Watson", "dr_watson", "", "Dermatologist", 650.00));
-        list.add(new Doctor(4, "Dr. Michael Brown", "dr_brown", "", "Orthopedic", 750.00));
+        list.add(new Doctor(3, "Dr. Aarti Sharma", "dr_sharma", "", "Dermatologist", 650.00));
+        list.add(new Doctor(4, "Dr. Rajesh Kumar", "dr_kumar", "", "Orthopedic", 750.00));
         return list;
     }
 
@@ -49,8 +49,8 @@ public class AdminController {
         List<Patient> list = new ArrayList<>();
         list.add(new Patient(1, "Aditya Singh", "aditya", "", "O+", "1234567890", 30));
         list.add(new Patient(2, "Vivek Bora", "vivek", "", "A-", "0987654321", 25));
-        list.add(new Patient(3, "Alice Johnson", "alicej", "", "B+", "5551234567", 45));
-        list.add(new Patient(4, "Bob Williams", "bobw", "", "AB+", "5559876543", 38));
+        list.add(new Patient(3, "Sneha Patel", "snehap", "", "B+", "9876543210", 45));
+        list.add(new Patient(4, "Ramesh Yadav", "ramesh_y", "", "AB+", "9988776655", 38));
         return list;
     }
 
@@ -145,7 +145,7 @@ public class AdminController {
             table.getChildren().add(makeRow(
                     doc.getName(),
                     doc.getSpecialization(),
-                    "$" + doc.getConsultationFee()));
+                    "₹" + doc.getConsultationFee()));
         }
 
         Label countLabel = new Label("Total: " + doctors.size() + " doctors");

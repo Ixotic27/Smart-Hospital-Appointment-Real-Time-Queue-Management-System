@@ -95,7 +95,7 @@ public class DoctorController {
         List<Patient> list = new ArrayList<>();
         list.add(new Patient(1, "Aditya Singh", "aditya", "", "O+", "1234567890", 30));
         list.add(new Patient(2, "Vivek Bora", "vivek", "", "A-", "0987654321", 25));
-        list.add(new Patient(3, "Alice Johnson", "alicej", "", "B+", "5551234567", 45));
+        list.add(new Patient(3, "Sneha Patel", "snehap", "", "B+", "9876543210", 45));
         return list;
     }
 
