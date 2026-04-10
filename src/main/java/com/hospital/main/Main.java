@@ -8,18 +8,35 @@ import javafx.stage.Stage;
 
 import java.net.URL;
 
+
+import com.hospital.services.QueueService;
+import com.hospital.services.QueueUpdater;
+
 public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+
         URL fxmlLocation = getClass().getResource("/views/Login.fxml");
+
         if (fxmlLocation == null) {
             System.err.println("Could not find /views/Login.fxml!");
             return;
         }
+
         Parent root = FXMLLoader.load(fxmlLocation);
+
         primaryStage.setTitle("Smart Hospital Appointment & Queue Management");
         primaryStage.setScene(new Scene(root, 900, 600));
+
+        
+        QueueService qs = new QueueService();
+        QueueUpdater updater = new QueueUpdater(qs, 1); // doctorId = 1 (temporary)
+
+        Thread t = new Thread(updater);
+        t.setDaemon(true); 
+        t.start();
+
         primaryStage.show();
     }
 
