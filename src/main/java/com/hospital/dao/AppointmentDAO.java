@@ -25,6 +25,46 @@ public class AppointmentDAO {
         }
     }
 
+    public boolean isSlotAvailable(int doctorId, String date, String time) {
+        String sql = "SELECT COUNT(*) FROM Appointments WHERE doctor_id = ? AND appointment_date = ? AND appointment_time = ? AND status != 'Cancelled'";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, doctorId);
+            stmt.setDate(2, Date.valueOf(date));
+            stmt.setTime(3, Time.valueOf(time));
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) == 0;
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("[AppointmentDAO] Error checking slot availability: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean updateAppointmentStatus(int appointmentId, String newStatus) {
+        if (!newStatus.equals("Pending") && !newStatus.equals("Ongoing") && !newStatus.equals("Completed") && !newStatus.equals("Cancelled")) {
+            System.err.println("[AppointmentDAO] Invalid status attempt: " + newStatus);
+            return false;
+        }
+        String sql = "UPDATE Appointments SET status = ? WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, newStatus);
+            stmt.setInt(2, appointmentId);
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.err.println("[AppointmentDAO] Error updating status: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     public ArrayList<Appointment> getAppointmentsByDoctor(int doctorId) {
         ArrayList<Appointment> list = new ArrayList<>();
         String sql = "SELECT a.*, u.name as patient_name FROM Appointments a JOIN Users u ON a.patient_id = u.id WHERE a.doctor_id = ? ORDER BY a.appointment_date, a.appointment_time";
@@ -51,20 +91,6 @@ public class AppointmentDAO {
             e.printStackTrace();
         }
         return list;
-    }
-
-    public boolean updateAppointmentStatus(int appointmentId, String newStatus) {
-        String sql = "UPDATE Appointments SET status = ? WHERE id = ?";
-        try (Connection conn = DatabaseConnection.getConnection();
-                PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            stmt.setString(1, newStatus);
-            stmt.setInt(2, appointmentId);
-            return stmt.executeUpdate() > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
     }
 
     public ArrayList<Appointment> getAllAppointments() {
